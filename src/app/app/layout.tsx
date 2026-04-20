@@ -3,43 +3,55 @@
 import * as React from "react";
 import { AppShell } from "@/components/shell/shell";
 import type { Insight } from "@/components/shell/insight-feed";
+import {
+  TransactionsProvider,
+  useTransactions,
+} from "@/components/transactions/transactions-context";
+import { useDataStore } from "@/lib/store/data-store";
 
-// Заглушки до Шага 9 (AI-движок). Тексты строго по TZ 9.3.
+function ShellWithFab({ children }: { children: React.ReactNode }) {
+  const { openNew } = useTransactions();
+  const stored = useDataStore((s) => s.insights);
+  const hydrated = useDataStore((s) => s._hydrated);
+
+  const insightsForFeed: Insight[] = React.useMemo(() => {
+    if (!hydrated) return STUB_INSIGHTS;
+    if (stored.length === 0) return STUB_INSIGHTS;
+    return stored
+      .filter((i) => !i.dismissedAt)
+      .slice(0, 5)
+      .map((i) => ({
+        id: i.id,
+        type: i.type,
+        title: i.title,
+        body: i.body,
+        cta: i.cta,
+        createdAt: i.createdAt,
+      }));
+  }, [stored, hydrated]);
+
+  return (
+    <AppShell insights={insightsForFeed} onAddTransaction={() => openNew("expense")}>
+      {children}
+    </AppShell>
+  );
+}
+
+// Stub-инсайты для пустой ленты — тексты строго по TZ 9.3.
 const STUB_INSIGHTS: Insight[] = [
   {
-    id: "stub-1",
+    id: "stub-positive",
     type: "positive",
-    title: "В этом месяце вы отложили 12% от дохода",
-    body: "На 4 процентных пункта больше, чем в среднем за последние 3 месяца. Это ваш выбор и ваш результат.",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "stub-2",
-    type: "pattern",
-    title: "Заметили, что на кофе ушло ~4 200 ₽ за неделю",
-    body: "Если ритм сохранится до конца месяца — это примерно 16 800 ₽. Ни хорошо, ни плохо — просто факт.",
-    cta: "Посмотреть поближе",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "stub-3",
-    type: "subscription",
-    title: "У вас 11 активных подписок на 8 450 ₽ в месяц",
-    body: "Это 101 400 ₽ в год. Возможно, часть уже не нужна, а часть — очень нужна. Решать вам.",
-    cta: "Открыть список",
+    title: "Добро пожаловать в Mindful Money",
+    body: "Мы не будем вас упрекать. Мы будем замечать паттерны и предлагать подумать — а решение всегда за вами.",
     createdAt: new Date().toISOString(),
   },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  // Заглушка до Шага 6 (Transactions drawer)
-  const handleAdd = React.useCallback(() => {
-    console.log("add-transaction intent");
-  }, []);
-
   return (
-    <AppShell insights={STUB_INSIGHTS} onAddTransaction={handleAdd}>
-      {children}
-    </AppShell>
+    <TransactionsProvider>
+      <ShellWithFab>{children}</ShellWithFab>
+    </TransactionsProvider>
   );
 }
