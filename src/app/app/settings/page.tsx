@@ -12,6 +12,14 @@ import {
   downloadBlob,
 } from "@/lib/export";
 import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 /**
  * Settings (TZ 7.10).
@@ -81,17 +89,23 @@ export default function SettingsPage() {
         <div className="mb-3 text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
           Основная валюта
         </div>
-        <select
-          value={settings.baseCurrency}
-          onChange={(e) => update({ baseCurrency: e.target.value as CurrencyCode })}
-          className="h-11 w-full max-w-xs rounded-xl border border-[var(--border-strong)] bg-[var(--surface-1)] px-3 text-sm"
-        >
-          {(Object.keys(CURRENCIES) as CurrencyCode[]).map((c) => (
-            <option key={c} value={c}>
-              {CURRENCIES[c].symbol} {c} — {CURRENCIES[c].name}
-            </option>
-          ))}
-        </select>
+        <div className="max-w-xs">
+          <Select
+            value={settings.baseCurrency}
+            onValueChange={(v) => update({ baseCurrency: v as CurrencyCode })}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {(Object.keys(CURRENCIES) as CurrencyCode[]).map((c) => (
+                <SelectItem key={c} value={c}>
+                  {CURRENCIES[c].symbol} {c} — {CURRENCIES[c].name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <p className="mt-2 text-xs text-[var(--text-tertiary)]">
           Все агрегированные суммы пересчитываются в эту валюту по курсу даты транзакции.
         </p>
@@ -251,21 +265,7 @@ function Toggle({
           </div>
         )}
       </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        onClick={() => onChange(!checked)}
-        className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-          checked ? "bg-[var(--accent-primary)]" : "bg-[var(--surface-3)]"
-        }`}
-      >
-        <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${
-            checked ? "translate-x-[22px]" : "translate-x-0.5"
-          }`}
-        />
-      </button>
+      <Switch checked={checked} onCheckedChange={onChange} />
     </label>
   );
 }

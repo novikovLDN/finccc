@@ -7,6 +7,13 @@ import { PERIOD_OPTIONS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { useShellStore } from "@/components/shell/store";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 /**
  * TopBar (TZ 6.2): выбор периода, поиск, notification center.
@@ -50,19 +57,19 @@ export function TopBar({ onOpenPalette }: { onOpenPalette?: () => void }) {
         })}
       </div>
 
-      <div className="md:hidden">
-        <select
-          value={period}
-          onChange={(e) => setPeriod(e.target.value as typeof period)}
-          className="glass h-9 rounded-full px-3 text-sm font-medium"
-          aria-label="Период"
-        >
-          {PERIOD_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+      <div className="md:hidden w-[140px]">
+        <Select value={period} onValueChange={(v) => setPeriod(v as typeof period)}>
+          <SelectTrigger size="sm" aria-label="Период">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PERIOD_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="ml-auto flex items-center gap-2">

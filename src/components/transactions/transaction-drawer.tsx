@@ -3,14 +3,21 @@
 import * as React from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { MoneyInput } from "@/components/ui/money-input";
-import { Input, Label } from "@/components/ui/input";
+import { Input, DateInput, Label } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { useDataStore } from "@/lib/store/data-store";
 import type { CurrencyCode } from "@/lib/currency";
 import type { TxnType, RecurrenceFrequency, Category } from "@/lib/types";
 import { Sparkles } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 /**
  * TransactionDrawer (TZ 6.3 Flow 2).
@@ -211,8 +218,7 @@ export function TransactionDrawer({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Дата</Label>
-              <Input
-                type="date"
+              <DateInput
                 className="mt-1.5"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
@@ -221,38 +227,52 @@ export function TransactionDrawer({
             <div>
               <Label>Повторять</Label>
               <div className="mt-1.5 flex gap-1.5">
-                <button
+                <motion.button
                   type="button"
                   onClick={() => setRecurring(!recurring)}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 22 }}
                   className={`flex h-11 flex-1 items-center justify-center rounded-xl border text-xs font-medium transition-colors ${
                     recurring
                       ? "border-[var(--accent-primary)] bg-[var(--accent-primary-soft)] text-[var(--accent-primary)]"
-                      : "border-[var(--border-strong)] text-[var(--text-secondary)]"
+                      : "border-[var(--border-strong)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)]"
                   }`}
                 >
                   {recurring ? "Регулярно" : "Один раз"}
-                </button>
+                </motion.button>
               </div>
             </div>
           </div>
 
-          {recurring && (
-            <div>
-              <Label>Периодичность</Label>
-              <select
-                value={frequency}
-                onChange={(e) => setFrequency(e.target.value as RecurrenceFrequency)}
-                className="mt-1.5 h-11 w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface-1)] px-3 text-sm"
+          <AnimatePresence initial={false}>
+            {recurring && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+                className="overflow-hidden"
               >
-                <option value="weekly">Каждую неделю</option>
-                <option value="biweekly">Раз в 2 недели</option>
-                <option value="monthly">Каждый месяц</option>
-                <option value="quarterly">Раз в квартал</option>
-                <option value="semiannual">Раз в полгода</option>
-                <option value="annual">Раз в год</option>
-              </select>
-            </div>
-          )}
+                <Label>Периодичность</Label>
+                <Select
+                  value={frequency}
+                  onValueChange={(v) => setFrequency(v as RecurrenceFrequency)}
+                >
+                  <SelectTrigger className="mt-1.5">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="weekly">Каждую неделю</SelectItem>
+                    <SelectItem value="biweekly">Раз в 2 недели</SelectItem>
+                    <SelectItem value="monthly">Каждый месяц</SelectItem>
+                    <SelectItem value="quarterly">Раз в квартал</SelectItem>
+                    <SelectItem value="semiannual">Раз в полгода</SelectItem>
+                    <SelectItem value="annual">Раз в год</SelectItem>
+                  </SelectContent>
+                </Select>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="mt-auto flex items-center gap-2 pt-2">
             <Button

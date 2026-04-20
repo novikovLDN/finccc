@@ -1,20 +1,24 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Plus, Trash2, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { Input, Label } from "@/components/ui/input";
-import { MoneyInput } from "@/components/ui/money-input";
 import { ProgressBar } from "@/components/ui/progress";
 import { Chip } from "@/components/ui/chip";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useDataStore } from "@/lib/store/data-store";
 import { budgetStatus } from "@/lib/formulas";
 import type { Budget, BudgetPeriodType } from "@/lib/types";
 import type { CurrencyCode } from "@/lib/currency";
 import { formatMoney } from "@/lib/currency";
+
+// Lazy load: форма создания открывается только по кнопке
+const BudgetCreateDialog = dynamic(
+  () => import("@/components/budgets/budget-create-dialog").then((m) => m.BudgetCreateDialog),
+  { ssr: false },
+);
 
 /**
  * Бюджеты (TZ 7.4).
@@ -26,41 +30,10 @@ export default function BudgetsPage() {
   const budgets = useDataStore((s) => s.budgets);
   const cats = useDataStore((s) => s.categories);
   const txns = useDataStore((s) => s.transactions);
-  const addBudget = useDataStore((s) => s.addBudget);
   const deleteBudget = useDataStore((s) => s.deleteBudget);
   const baseCurrency = useDataStore((s) => s.settings.baseCurrency);
 
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
-  const [catId, setCatId] = React.useState<string | "all">("all");
-  const [amount, setAmount] = React.useState<number | null>(null);
-  const [currency, setCurrency] = React.useState<CurrencyCode>(baseCurrency);
-  const [periodType, setPeriodType] = React.useState<BudgetPeriodType>("month");
-
-  React.useEffect(() => {
-    if (open) {
-      setName("");
-      setCatId("all");
-      setAmount(null);
-      setCurrency(baseCurrency);
-      setPeriodType("month");
-    }
-  }, [open, baseCurrency]);
-
-  const onSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!amount || amount <= 0) return;
-    addBudget({
-      categoryId: catId === "all" ? null : catId,
-      periodType,
-      amountMinor: amount,
-      currency,
-      rollover: false,
-      startDate: new Date().toISOString().slice(0, 10),
-      name: name || undefined,
-    });
-    setOpen(false);
-  };
 
   if (!hydrated) return null;
 
@@ -184,80 +157,7 @@ export default function BudgetsPage() {
         </ul>
       )}
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent side="center">
-          <DialogTitle>Новый бюджет</DialogTitle>
-          <DialogDescription>
-            Мягкий лимит, который мы покажем как ориентир. Ничего не ограничиваем.
-          </DialogDescription>
-
-          <form onSubmit={onSave} className="mt-3 flex flex-col gap-4">
-            <div>
-              <Label>Название (необязательно)</Label>
-              <Input
-                className="mt-1.5"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="например, Кафе и обеды"
-              />
-            </div>
-            <div>
-              <Label>Категория</Label>
-              <select
-                value={catId}
-                onChange={(e) => setCatId(e.target.value)}
-                className="mt-1.5 h-11 w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface-1)] px-3 text-sm"
-              >
-                <option value="all">Общий (все категории)</option>
-                {cats
-                  .filter((c) => !c.isArchived && c.kind !== "income")
-                  .map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.icon} {c.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
-            <div>
-              <Label>Сумма на период</Label>
-              <MoneyInput
-                className="mt-1.5"
-                valueMinor={amount}
-                currency={currency}
-                onValueChange={(v) => setAmount(v)}
-                onCurrencyChange={setCurrency}
-              />
-            </div>
-            <div>
-              <Label>Период</Label>
-              <div className="mt-1.5 grid grid-cols-3 gap-1.5">
-                {(["week", "month", "quarter"] as BudgetPeriodType[]).map((p) => (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() => setPeriodType(p)}
-                    className={`h-11 rounded-xl border text-xs font-medium transition-colors ${
-                      periodType === p
-                        ? "border-[var(--accent-primary)] bg-[var(--accent-primary-soft)] text-[var(--accent-primary)]"
-                        : "border-[var(--border-strong)] text-[var(--text-secondary)]"
-                    }`}
-                  >
-                    {periodLabel(p)}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-                Отмена
-              </Button>
-              <Button type="submit" className="flex-1" disabled={!amount || amount <= 0}>
-                Создать
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {open && <BudgetCreateDialog open={open} onOpenChange={setOpen} />}
     </div>
   );
 }

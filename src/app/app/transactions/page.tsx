@@ -7,6 +7,13 @@ import { Search, Plus, Trash2, Pencil, Undo2, X, Filter } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Chip } from "@/components/ui/chip";
 import { useDataStore } from "@/lib/store/data-store";
 import { useTransactions } from "@/components/transactions/transactions-context";
@@ -132,19 +139,23 @@ export default function TransactionsPage() {
           </div>
         </div>
 
-        <select
-          value={catFilter}
-          onChange={(e) => setCatFilter(e.target.value)}
-          className="h-9 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2 text-xs"
-          aria-label="Фильтр по категории"
-        >
-          <option value="all">Все категории</option>
-          {cats.filter((c) => !c.isArchived).map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.icon} {c.name}
-            </option>
-          ))}
-        </select>
+        <div className="w-[180px]">
+          <Select value={catFilter} onValueChange={(v) => setCatFilter(v)}>
+            <SelectTrigger size="sm" aria-label="Фильтр по категории">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Все категории</SelectItem>
+              {cats
+                .filter((c) => !c.isArchived)
+                .map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.icon} {c.name}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {(query || typeFilter !== "all" || catFilter !== "all") && (
           <button
