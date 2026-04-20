@@ -1,13 +1,17 @@
 providers = ["node"]
 
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["nodejs_22"]
 
 [phases.install]
-cmds = ["npm ci --include=dev"]
+cmds = ["npm ci --include=dev --no-audit --prefer-offline"]
 
 [phases.build]
 cmds = ["npm run build"]
 
 [start]
 cmd = "npm run start"
+
+[variables]
+NODE_ENV = "production"
+NEXT_TELEMETRY_DISABLED = "1"
