@@ -9,7 +9,8 @@ import { GoalsMini } from "./goals-mini";
 import { useDataStore, generateDemoData } from "@/lib/store/data-store";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Wand2 } from "lucide-react";
+import { runInsightEngine } from "@/lib/ai/run";
 
 // Тяжёлые Recharts-виджеты грузим динамически для соблюдения
 // бюджета JS (TZ 10.7: < 180 KB gzip на первый лод).
@@ -41,6 +42,16 @@ export function DashboardView() {
   const hydrated = useDataStore((s) => s._hydrated);
   const txnsCount = useDataStore((s) => s.transactions.filter((t) => !t.deletedAt).length);
 
+  // TZ 9: авто-запуск движка инсайтов 1 раз при первой загрузке
+  // dashboard, если данных достаточно.
+  const insightsCount = useDataStore((s) => s.insights.filter((i) => !i.dismissedAt).length);
+  React.useEffect(() => {
+    if (!hydrated) return;
+    if (txnsCount >= 10 && insightsCount === 0) {
+      runInsightEngine();
+    }
+  }, [hydrated, txnsCount, insightsCount]);
+
   const greeting = React.useMemo(() => {
     const h = new Date().getHours();
     if (h < 6) return "Доброй ночи";
@@ -68,12 +79,20 @@ export function DashboardView() {
               : "Здесь появится картина ваших финансов. Начнём с первой операции?"}
           </p>
         </div>
-        {txnsCount === 0 && (
-          <Button variant="secondary" onClick={() => generateDemoData()}>
-            <Sparkles className="size-4" aria-hidden />
-            Посмотреть на демо-данных
-          </Button>
-        )}
+        <div className="flex gap-2">
+          {txnsCount > 0 && (
+            <Button variant="secondary" onClick={() => runInsightEngine()}>
+              <Wand2 className="size-4" aria-hidden />
+              Пересчитать инсайты
+            </Button>
+          )}
+          {txnsCount === 0 && (
+            <Button variant="secondary" onClick={() => generateDemoData()}>
+              <Sparkles className="size-4" aria-hidden />
+              Посмотреть на демо-данных
+            </Button>
+          )}
+        </div>
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
