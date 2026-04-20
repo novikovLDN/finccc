@@ -289,6 +289,45 @@ body {
   }
 }
 
+/* =========================================================
+   Radix dialog / popover animations
+   ========================================================= */
+@keyframes mm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mm-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes mm-zoom-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes mm-zoom-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+}
+@keyframes mm-slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes mm-slide-out-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+@keyframes mm-fade-slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+[data-state="open"][data-mm="overlay"] { animation: mm-fade-in 200ms var(--ease-out-standard); }
+[data-state="closed"][data-mm="overlay"] { animation: mm-fade-out 150ms var(--ease-in-standard); }
+[data-state="open"][data-mm="dialog-center"] { animation: mm-zoom-in 250ms var(--ease-emphasis); }
+[data-state="closed"][data-mm="dialog-center"] { animation: mm-zoom-out 180ms var(--ease-in-standard); }
+[data-state="open"][data-mm="dialog-right"] { animation: mm-slide-in-right 300ms var(--ease-emphasis); }
+[data-state="closed"][data-mm="dialog-right"] { animation: mm-slide-out-right 220ms var(--ease-in-standard); }
+
 /* Scrollbar — тихий, ненавязчивый */
 ::-webkit-scrollbar {
   width: 10px;
