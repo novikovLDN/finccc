@@ -3,12 +3,20 @@ import { ArrowRight, Sparkles, ShieldCheck, Eye } from "lucide-react";
 import { HeroPortalAnimation } from "@/components/landing/hero-portal";
 
 /**
- * Landing — dark hero в духе Voxr AI, под Mindful Money.
+ * Landing — full-bleed dark hero 1:1 с Voxr reference.
  *
- * Структура:
- *  - Header: лого + nav + CTA
- *  - Hero: split-headline + bullets-pills + CTA + portal-animation
- *  - Features grid (наследие, под dark theme)
+ * Layout:
+ *   ┌─ HEADER ─────────────────────────────────────────┐
+ *   │                                                   │
+ *   │  Text (left)              Pills (right, stacked)  │
+ *   │  Text                                             │
+ *   │  Text                                             │
+ *   │  Description                                      │
+ *   │  [CTA pill]                                       │
+ *   │                                                   │
+ *   │  [============ PORTAL SCENE full-width =========] │
+ *   │                                                   │
+ *   └───────────────────────────────────────────────────┘
  */
 export default function LandingPage() {
   return (
@@ -35,19 +43,27 @@ export default function LandingPage() {
       </div>
 
       {/* HEADER */}
-      <header className="relative z-20 mx-auto flex w-full max-w-[1280px] items-center justify-between px-5 sm:px-8 py-5">
+      <header className="relative z-20 mx-auto flex w-full max-w-[1360px] items-center justify-between px-5 sm:px-8 py-5">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl"
-               style={{ background: "linear-gradient(135deg, #A78BFA, #5EEAD4)" }}>
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-xl"
+            style={{ background: "linear-gradient(135deg, #A78BFA, #5EEAD4)" }}
+          >
             <span className="text-sm font-bold text-[#0a0915]">M</span>
           </div>
           <span className="text-[15px] font-semibold tracking-tight">Mindful Money</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[14px] text-white/70">
-          <a href="#features" className="hover:text-white transition-colors">Возможности</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Тарифы</a>
-          <a href="#about" className="hover:text-white transition-colors">О нас</a>
+          <a href="#features" className="hover:text-white transition-colors">
+            Возможности
+          </a>
+          <a href="#pricing" className="hover:text-white transition-colors">
+            Тарифы
+          </a>
+          <a href="#about" className="hover:text-white transition-colors">
+            О нас
+          </a>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -62,47 +78,49 @@ export default function LandingPage() {
             className="group inline-flex items-center gap-1 rounded-full bg-white pl-5 pr-1 py-1 text-[13px] font-semibold text-[#0a0915] hover:scale-[0.98] transition-transform"
           >
             Войти
-            <span className="ml-2 flex h-8 w-8 items-center justify-center rounded-full"
-                  style={{ background: "#A78BFA" }}>
+            <span className="ml-2 flex h-8 w-8 items-center justify-center rounded-full" style={{ background: "#A78BFA" }}>
               <ArrowRight className="size-4 text-white transition-transform group-hover:translate-x-0.5" />
             </span>
           </Link>
         </div>
       </header>
 
-      {/* HERO */}
-      <section className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8 pt-6 sm:pt-12 pb-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-start">
-          {/* LEFT: copy */}
+      {/* HERO — full viewport, animation integrated */}
+      <section className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-4 sm:pt-8 min-h-[calc(100dvh-80px)]">
+        {/* TOP: text + pills в grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-8 lg:gap-14 items-start relative z-10">
+          {/* LEFT: heading + copy + CTA */}
           <div className="relative">
-            <h1 className="font-semibold tracking-tight leading-[1.04]"
-                style={{ fontSize: "clamp(2.25rem, 5.5vw, 4.25rem)" }}>
-              <span className="text-white">Хватит упрекать себя за деньги.</span>{" "}
+            <h1
+              className="font-semibold tracking-tight leading-[1.02]"
+              style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+            >
+              <span className="text-white">Хватит упрекать себя</span>{" "}
+              <span className="text-white">за деньги.</span>{" "}
               <span
                 className="bg-clip-text text-transparent"
                 style={{
                   backgroundImage:
-                    "linear-gradient(135deg, #E9E3FF 0%, #A78BFA 60%, #5EEAD4 100%)",
+                    "linear-gradient(135deg, #E9E3FF 0%, #A78BFA 55%, #5EEAD4 100%)",
                 }}
               >
                 Начните спокойно их понимать.
               </span>
             </h1>
 
-            <p className="mt-7 max-w-[520px] text-[15px] sm:text-[16px] leading-relaxed text-white/65">
+            <p className="mt-7 max-w-[540px] text-[15px] sm:text-[16px] leading-relaxed text-white/65">
               Wellness-first платформа учёта личных финансов. Мы замечаем паттерны,
-              мягко делимся наблюдениями и показываем красивые графики —
-              решение всегда остаётся за вами.
+              мягко делимся наблюдениями и показываем красивые графики — решение
+              всегда остаётся за вами.
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3">
               <Link
                 href="/app"
                 className="group inline-flex items-center gap-1 rounded-full bg-white pl-6 pr-1 py-1.5 text-[14px] font-semibold text-[#0a0915] hover:scale-[0.98] transition-transform"
               >
                 Попробовать
-                <span className="ml-3 flex h-9 w-9 items-center justify-center rounded-full"
-                      style={{ background: "#A78BFA" }}>
+                <span className="ml-3 flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "#A78BFA" }}>
                   <ArrowRight className="size-4 text-white transition-transform group-hover:translate-x-0.5" />
                 </span>
               </Link>
@@ -115,32 +133,37 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* RIGHT: pills + animation */}
-          <div className="relative flex flex-col items-end gap-5">
-            <div className="w-full flex flex-col items-end gap-3.5 lg:gap-4">
-              <Pill icon={<Sparkles className="size-3.5" style={{ color: "#A78BFA" }} />}>
-                Спокойные AI-инсайты до 3 в неделю
-              </Pill>
-              <Pill icon={<ShieldCheck className="size-3.5" style={{ color: "#5EEAD4" }} />}>
-                Без красных цифр и упрёков
-              </Pill>
-              <Pill icon={<Eye className="size-3.5" style={{ color: "#A5B4FC" }} />}>
-                Видим паттерны за вас
-              </Pill>
-            </div>
+          {/* RIGHT: pills stacked */}
+          <div className="flex flex-col items-end gap-3 sm:gap-4 lg:mt-4">
+            <Pill icon={<Sparkles className="size-3.5" style={{ color: "#A78BFA" }} />}>
+              Спокойные AI-инсайты до 3 в неделю
+            </Pill>
+            <Pill icon={<ShieldCheck className="size-3.5" style={{ color: "#5EEAD4" }} />}>
+              Без красных цифр и упрёков
+            </Pill>
+            <Pill icon={<Eye className="size-3.5" style={{ color: "#A5B4FC" }} />}>
+              Видим паттерны за вас
+            </Pill>
           </div>
         </div>
 
-        {/* PORTAL animation — full-width внизу hero */}
-        <div className="relative mt-10 sm:mt-14">
-          <HeroPortalAnimation />
+        {/* ANIMATION — full-bleed bottom, больше viewport, интегрирована как фон */}
+        <div className="relative z-0 -mx-5 sm:-mx-8 mt-6 sm:mt-10 md:-mt-4">
+          <div className="pointer-events-none">
+            <HeroPortalAnimation />
+          </div>
         </div>
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8 py-16">
-        <h2 className="font-semibold tracking-tight"
-            style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}>
+      <section
+        id="features"
+        className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8 py-16"
+      >
+        <h2
+          className="font-semibold tracking-tight"
+          style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}
+        >
           Что внутри
         </h2>
         <p className="mt-3 max-w-xl text-white/60 text-[15px] leading-relaxed">
@@ -203,25 +226,30 @@ export default function LandingPage() {
       </section>
 
       <footer className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8 pb-12">
-        <div className="rounded-3xl p-6 sm:p-10"
-             style={{
-               background:
-                 "radial-gradient(circle at 30% 20%, rgba(167,139,250,0.18), transparent 55%), radial-gradient(circle at 80% 70%, rgba(94,234,212,0.14), transparent 55%), rgba(255,255,255,0.03)",
-               border: "1px solid rgba(255,255,255,0.08)",
-             }}>
-          <h3 className="font-semibold tracking-tight"
-              style={{ fontSize: "clamp(1.5rem, 3vw, 2.25rem)" }}>
+        <div
+          className="rounded-3xl p-6 sm:p-10"
+          style={{
+            background:
+              "radial-gradient(circle at 30% 20%, rgba(167,139,250,0.18), transparent 55%), radial-gradient(circle at 80% 70%, rgba(94,234,212,0.14), transparent 55%), rgba(255,255,255,0.03)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <h3
+            className="font-semibold tracking-tight"
+            style={{ fontSize: "clamp(1.5rem, 3vw, 2.25rem)" }}
+          >
             Откройте приложение за 30 секунд
           </h3>
-          <p className="mt-2 text-white/60">Без регистрации, без рекламы, без передачи данных третьим сторонам.</p>
+          <p className="mt-2 text-white/60">
+            Без регистрации, без рекламы, без передачи данных третьим сторонам.
+          </p>
           <div className="mt-6">
             <Link
               href="/app"
               className="group inline-flex items-center gap-1 rounded-full bg-white pl-6 pr-1 py-1.5 text-[14px] font-semibold text-[#0a0915] hover:scale-[0.98] transition-transform"
             >
               Открыть Mindful Money
-              <span className="ml-3 flex h-9 w-9 items-center justify-center rounded-full"
-                    style={{ background: "#A78BFA" }}>
+              <span className="ml-3 flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "#A78BFA" }}>
                 <ArrowRight className="size-4 text-white transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
@@ -236,13 +264,7 @@ export default function LandingPage() {
   );
 }
 
-function Pill({
-  icon,
-  children,
-}: {
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) {
+function Pill({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
     <div
       className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] sm:text-[14px] font-medium text-white/80 backdrop-blur-md"
@@ -253,8 +275,10 @@ function Pill({
         boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
       }}
     >
-      <span className="flex h-6 w-6 items-center justify-center rounded-full"
-            style={{ background: "rgba(255,255,255,0.06)" }}>
+      <span
+        className="flex h-6 w-6 items-center justify-center rounded-full"
+        style={{ background: "rgba(255,255,255,0.06)" }}
+      >
         {icon}
       </span>
       {children}

@@ -33,7 +33,7 @@ export function HeroPortalAnimation() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[1100px] h-[340px] sm:h-[420px] md:h-[480px] select-none"
+      className="relative mx-auto w-full h-[360px] sm:h-[460px] md:h-[540px] select-none"
       aria-hidden
     >
       <StageFloor reduce={!!reduce} />
@@ -41,7 +41,7 @@ export function HeroPortalAnimation() {
       {/* Portal */}
       <div
         className="absolute z-[4]"
-        style={{ left: `${PORTAL_X}%`, top: "22%", transform: "translateX(-50%)" }}
+        style={{ left: `${PORTAL_X}%`, top: "16%", transform: "translateX(-50%)" }}
       >
         <Portal reduce={!!reduce} />
       </div>
@@ -49,7 +49,7 @@ export function HeroPortalAnimation() {
       {/* Calendar у основания портала */}
       <div
         className="absolute z-[6]"
-        style={{ left: `${PORTAL_X}%`, top: "66%", transform: "translateX(-50%)" }}
+        style={{ left: `${PORTAL_X}%`, top: "62%", transform: "translateX(-50%)" }}
       >
         <CalendarCube reduce={!!reduce} />
       </div>
@@ -154,7 +154,7 @@ function StageFloor({ reduce }: { reduce: boolean }) {
 
 function Portal({ reduce }: { reduce: boolean }) {
   return (
-    <div className="relative h-[200px] w-[150px] sm:h-[240px] sm:w-[180px]">
+    <div className="relative h-[240px] w-[180px] sm:h-[300px] sm:w-[220px] md:h-[340px] md:w-[250px]">
       <motion.div
         className="absolute -inset-10 rounded-[80px]"
         style={{
@@ -273,7 +273,7 @@ function CalendarCube({ reduce }: { reduce: boolean }) {
         />
       )}
 
-      <svg viewBox="0 0 120 120" className="relative h-[96px] w-[96px] sm:h-[112px] sm:w-[112px]">
+      <svg viewBox="0 0 120 120" className="relative h-[112px] w-[112px] sm:h-[132px] sm:w-[132px] md:h-[152px] md:w-[152px]">
         <defs>
           <linearGradient id="cube-front-v2" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#C9B8FF" />
@@ -433,10 +433,10 @@ function HumanoidBob({ children }: { children: React.ReactNode }) {
 function HumanoidFigure({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const dim =
     size === "sm"
-      ? { w: 62, h: 92 }
+      ? { w: 78, h: 116 }
       : size === "lg"
-        ? { w: 90, h: 132 }
-        : { w: 76, h: 114 };
+        ? { w: 112, h: 166 }
+        : { w: 96, h: 142 };
 
   return (
     <div
