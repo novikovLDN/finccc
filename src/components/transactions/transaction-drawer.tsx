@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { MoneyInput } from "@/components/ui/money-input";
-import { Input, DateInput, Label } from "@/components/ui/input";
+import { Label } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -12,17 +14,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
 import { useDataStore } from "@/lib/store/data-store";
 import type { CurrencyCode } from "@/lib/currency";
 import type { TxnType, RecurrenceFrequency, Category } from "@/lib/types";
-import { Sparkles } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { cn } from "@/lib/utils";
 
 /**
  * TransactionDrawer (TZ 6.3 Flow 2).
- * Открывается справа как Sheet, glass-surface.
- * Фокус на поле «Сумма», AI-подсказка категории справа.
+ * Упрощён: только Расход/Доход, без «Перевод» и без «Описание»
+ * (описание подставляем из категории).
  */
 export function TransactionDrawer({
   open,
@@ -48,29 +48,25 @@ export function TransactionDrawer({
   const [type, setType] = React.useState<TxnType>(initialType);
   const [amount, setAmount] = React.useState<number | null>(null);
   const [currency, setCurrency] = React.useState<CurrencyCode>(baseCurrency);
-  const [desc, setDesc] = React.useState("");
   const [catId, setCatId] = React.useState<string | null>(null);
   const [date, setDate] = React.useState(new Date().toISOString().slice(0, 10));
   const [recurring, setRecurring] = React.useState(false);
   const [frequency, setFrequency] = React.useState<RecurrenceFrequency>("monthly");
 
-  // Сброс формы при закрытии / заполнение при редактировании
   React.useEffect(() => {
     if (!open) return;
     if (editing) {
-      setType(editing.type);
+      setType(editing.type === "transfer" ? "expense" : editing.type);
       setAmount(editing.amountMinor);
       setCurrency(editing.currency);
-      setDesc(editing.description);
       setCatId(editing.categoryId);
       setDate(editing.transactionDate);
       setRecurring(editing.isRecurring);
       setFrequency(editing.recurrenceFrequency ?? "monthly");
     } else {
-      setType(initialType);
+      setType(initialType === "transfer" ? "expense" : initialType);
       setAmount(null);
       setCurrency(baseCurrency);
-      setDesc("");
       setCatId(null);
       setDate(new Date().toISOString().slice(0, 10));
       setRecurring(false);
@@ -78,25 +74,24 @@ export function TransactionDrawer({
     }
   }, [open, editing, initialType, baseCurrency]);
 
-  // AI-подсказка категории (keyword-based, TZ 7.2 TXN-06 + 7.3 CAT-06)
-  const suggested = React.useMemo(() => suggestCategory(desc, type, categories), [desc, type, categories]);
-
   const kindFilter = type === "income" ? "income" : "expense";
   const visibleCats = categories
     .filter((c) => !c.isArchived)
-    .filter((c) => c.kind === kindFilter || c.kind === "both");
+    .filter((c) => c.kind === kindFilter || c.kind === "both")
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
-  const canSave = amount != null && amount > 0 && desc.trim().length > 0;
+  const selectedCat = catId ? categories.find((c) => c.id === catId) ?? null : null;
+  const canSave = amount != null && amount > 0 && selectedCat != null;
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!canSave || amount == null) return;
+    if (!canSave || amount == null || !selectedCat) return;
     const payload = {
       type,
       amountMinor: amount,
       currency,
-      description: desc.trim(),
-      categoryId: catId ?? suggested?.id ?? null,
+      description: selectedCat.name,
+      categoryId: selectedCat.id,
       transactionDate: date,
       tags: [],
       isRecurring: recurring,
@@ -111,7 +106,6 @@ export function TransactionDrawer({
     onOpenChange(false);
   };
 
-  // Cmd+Enter = save shortcut (TZ 6.3 Flow 2)
   const handleKey: React.KeyboardEventHandler<HTMLFormElement> = (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && canSave) {
       e.preventDefault();
@@ -121,17 +115,29 @@ export function TransactionDrawer({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent side="auto" onKeyDown={handleKey as unknown as React.KeyboardEventHandler<HTMLDivElement>}>
+      <DialogContent
+        side="auto"
+        onKeyDown={handleKey as unknown as React.KeyboardEventHandler<HTMLDivElement>}
+      >
         <DialogTitle>{editing ? "Редактировать операцию" : "Новая операция"}</DialogTitle>
-        <DialogDescription>Занимает секунд 10. Всё можно поменять позже.</DialogDescription>
+        <DialogDescription>Все поля можно поменять позже.</DialogDescription>
 
-        <form onSubmit={onSubmit} onKeyDown={handleKey} className="mt-3 flex flex-col gap-4 overflow-y-auto pr-1">
-          <div role="tablist" className="glass flex items-center gap-1 rounded-full p-1">
-            {([
-              { v: "expense" as const, label: "Расход" },
-              { v: "income" as const, label: "Доход" },
-              { v: "transfer" as const, label: "Перевод" },
-            ]).map((opt) => {
+        <form
+          onSubmit={onSubmit}
+          onKeyDown={handleKey}
+          className="mt-2 flex flex-col gap-5 overflow-y-auto pr-0.5"
+        >
+          {/* Тип — только 2 вкладки */}
+          <div
+            role="tablist"
+            className="relative flex items-center gap-0 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-2)] p-1"
+          >
+            {(
+              [
+                { v: "expense" as const, label: "Расход" },
+                { v: "income" as const, label: "Доход" },
+              ]
+            ).map((opt) => {
               const active = type === opt.v;
               return (
                 <button
@@ -140,16 +146,23 @@ export function TransactionDrawer({
                   role="tab"
                   aria-selected={active}
                   onClick={() => setType(opt.v)}
-                  className={`relative h-8 flex-1 rounded-full text-[13px] font-medium transition-colors ${
-                    active ? "text-white" : "text-[var(--text-secondary)]"
-                  }`}
+                  className={cn(
+                    "relative h-10 flex-1 rounded-xl text-[14px] font-semibold tracking-tight transition-colors",
+                    active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
+                  )}
                 >
                   {active && (
                     <motion.span
-                      layoutId="txn-type"
-                      className="absolute inset-0 rounded-full"
-                      style={{ background: "var(--accent-primary)" }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      layoutId="txn-type-v2"
+                      className="absolute inset-0 rounded-xl"
+                      style={{
+                        background:
+                          opt.v === "income"
+                            ? "linear-gradient(135deg, var(--accent-mint), color-mix(in oklab, var(--accent-mint) 60%, var(--accent-sky)))"
+                            : "linear-gradient(135deg, var(--accent-primary), color-mix(in oklab, var(--accent-primary) 60%, var(--accent-mint)))",
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                      }}
+                      transition={{ type: "spring", stiffness: 340, damping: 30 }}
                     />
                   )}
                   <span className="relative">{opt.label}</span>
@@ -158,6 +171,7 @@ export function TransactionDrawer({
             })}
           </div>
 
+          {/* Сумма */}
           <div>
             <Label>Сумма</Label>
             <MoneyInput
@@ -167,80 +181,62 @@ export function TransactionDrawer({
               onValueChange={(m) => setAmount(m)}
               onCurrencyChange={setCurrency}
               autoFocus
+              size="lg"
               className="mt-1.5"
             />
           </div>
 
-          <div>
-            <Label>Описание</Label>
-            <Input
-              className="mt-1.5"
-              placeholder="например, Espresso Starbucks"
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-            />
-            {suggested && catId == null && (
-              <button
-                type="button"
-                onClick={() => setCatId(suggested.id)}
-                className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-dashed border-[var(--accent-primary)] px-2.5 py-1 text-xs text-[var(--accent-primary)] hover:bg-[var(--accent-primary-soft)]"
-              >
-                <Sparkles className="size-3" aria-hidden />
-                Похоже на «{suggested.icon} {suggested.name}» — принять
-              </button>
-            )}
-          </div>
-
+          {/* Категория — uniform grid */}
           <div>
             <Label>Категория</Label>
-            <div className="mt-1.5 flex flex-wrap gap-1.5 max-h-[168px] overflow-y-auto">
+            <div className="mt-1.5 grid grid-cols-3 gap-1.5 sm:gap-2 max-h-[240px] overflow-y-auto no-scrollbar">
               {visibleCats.map((c) => (
-                <Chip
+                <CategoryTile
                   key={c.id}
-                  color={c.color}
-                  icon={<span>{c.icon}</span>}
-                  interactive
+                  category={c}
                   active={c.id === catId}
-                  onClick={() => setCatId(c.id === catId ? null : c.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setCatId(c.id === catId ? null : c.id);
-                    }
-                  }}
-                >
-                  {c.name}
-                </Chip>
+                  onSelect={() => setCatId(c.id === catId ? null : c.id)}
+                />
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          {/* Дата + Повтор */}
+          <div className="grid grid-cols-[1fr_auto] gap-3 items-end">
             <div>
               <Label>Дата</Label>
-              <DateInput
-                className="mt-1.5"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
+              <div className="mt-1.5">
+                <DatePicker value={date} onChange={setDate} />
+              </div>
             </div>
             <div>
-              <Label>Повторять</Label>
-              <div className="mt-1.5 flex gap-1.5">
-                <motion.button
-                  type="button"
-                  onClick={() => setRecurring(!recurring)}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                  className={`flex h-11 flex-1 items-center justify-center rounded-xl border text-xs font-medium transition-colors ${
-                    recurring
-                      ? "border-[var(--accent-primary)] bg-[var(--accent-primary-soft)] text-[var(--accent-primary)]"
-                      : "border-[var(--border-strong)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)]"
-                  }`}
+              <Label>Повтор</Label>
+              <motion.button
+                type="button"
+                onClick={() => setRecurring(!recurring)}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                className={cn(
+                  "mt-1.5 flex h-11 items-center gap-2 rounded-xl border px-3 text-[13px] font-medium transition-colors",
+                  recurring
+                    ? "border-[var(--accent-primary)] bg-[var(--accent-primary-soft)] text-[var(--accent-primary)]"
+                    : "border-[var(--border-strong)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)]",
+                )}
+              >
+                <span
+                  className={cn(
+                    "relative h-4 w-7 rounded-full transition-colors",
+                    recurring ? "bg-[var(--accent-primary)]" : "bg-[var(--surface-3)]",
+                  )}
                 >
-                  {recurring ? "Регулярно" : "Один раз"}
-                </motion.button>
-              </div>
+                  <motion.span
+                    className="absolute top-0.5 h-3 w-3 rounded-full bg-white shadow-sm"
+                    animate={{ x: recurring ? 14 : 2 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                  />
+                </span>
+                {recurring ? "Регулярно" : "Один раз"}
+              </motion.button>
             </div>
           </div>
 
@@ -250,14 +246,11 @@ export function TransactionDrawer({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+                transition={{ duration: 0.22, ease: [0.33, 1, 0.68, 1] }}
                 className="overflow-hidden"
               >
                 <Label>Периодичность</Label>
-                <Select
-                  value={frequency}
-                  onValueChange={(v) => setFrequency(v as RecurrenceFrequency)}
-                >
+                <Select value={frequency} onValueChange={(v) => setFrequency(v as RecurrenceFrequency)}>
                   <SelectTrigger className="mt-1.5">
                     <SelectValue />
                   </SelectTrigger>
@@ -274,16 +267,14 @@ export function TransactionDrawer({
             )}
           </AnimatePresence>
 
-          <div className="mt-auto flex items-center gap-2 pt-2">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => onOpenChange(false)}
-            >
+          {/* Actions */}
+          <div className="mt-2 flex items-center gap-2 pt-1">
+            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
               Отмена
             </Button>
-            <Button type="submit" disabled={!canSave} className="flex-1">
-              Сохранить <kbd className="ml-1 opacity-60 text-[11px]">⌘↵</kbd>
+            <Button type="submit" disabled={!canSave} className="flex-1" size="lg">
+              Сохранить
+              <kbd className="ml-1 hidden sm:inline-flex opacity-60 text-[11px]">⌘↵</kbd>
             </Button>
           </div>
         </form>
@@ -292,37 +283,45 @@ export function TransactionDrawer({
   );
 }
 
-/**
- * Простой keyword-classifier для smart-категоризации (TZ 7.3 CAT-06, 7.2 TXN-06).
- * Это стаб — на Шаге 9 заменится LLM-вспомогателем (опционально).
- */
-function suggestCategory(desc: string, type: TxnType, cats: Category[]): Category | null {
-  if (!desc.trim()) return null;
-  const low = desc.toLowerCase();
-  const kindFilter = type === "income" ? "income" : "expense";
-  const pool = cats.filter((c) => c.kind === kindFilter || c.kind === "both");
-
-  const rules: Array<[string, RegExp]> = [
-    ["Кофе и напитки", /starbucks|double\s?b|surf|cofix|кофе|coffee|latte|espresso|капучино/i],
-    ["Еда и рестораны", /restaur|бар|кафе|food|lunch|dinner|ужин|обед|prime|white rabbit|доставк|деливер|yandex\.?еда|дост.?еда|pizza/i],
-    ["Продукты", /вкусвилл|перекрёст|перекрест|пятёрочк|пятерочк|лавк|lavka|ashan|ашан|магнит|продукт|grocery/i],
-    ["Транспорт", /такси|taxi|metro|метро|тройк|каршер|drive|yandex\.?такси|bolt|trol|bus|uber/i],
-    ["Аренда и ЖКХ", /аренд|rent|жкх|utilit|коммунал/i],
-    ["Подписки", /spotify|netflix|chatgpt|claude|openai|figma|notion|youtube|icloud|jetbrains|cursor|midjourney|github|subscription/i],
-    ["Развлечения", /кино|cinema|concert|билет|театр|ticket|entertainment/i],
-    ["Одежда", /zara|h\s*&\s*m|uniqlo|lamoda|clothing|одежда/i],
-    ["Путешествия", /hotel|hostel|booking|aviasales|авиабилет|отпуск|travel|билет/i],
-    ["Спорт", /фитнес|gym|sport|crossfit|yoga/i],
-    ["Красота и здоровье", /салон|beauty|парикмах|барбер|barber|apteka|аптек|pharmacy/i],
-    ["Зарплата", /salary|зарплат|salario|payroll/i],
-    ["Фриланс", /upwork|freelance|фриланс|contract/i],
-  ];
-
-  for (const [name, re] of rules) {
-    if (re.test(low)) {
-      const c = pool.find((x) => x.name === name);
-      if (c) return c;
-    }
-  }
-  return null;
+/** Плитка категории — uniform grid tile */
+function CategoryTile({
+  category,
+  active,
+  onSelect,
+}: {
+  category: Category;
+  active: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <motion.button
+      type="button"
+      role="option"
+      aria-selected={active}
+      onClick={onSelect}
+      whileTap={{ scale: 0.96 }}
+      transition={{ type: "spring", stiffness: 400, damping: 24 }}
+      className={cn(
+        "relative flex h-[76px] flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl border text-[11px] font-medium leading-tight transition-colors",
+        active
+          ? "border-[color:var(--cat)] bg-[color-mix(in_oklab,var(--cat)_16%,transparent)] text-[var(--text-primary)]"
+          : "border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-2)]",
+      )}
+      style={{ ["--cat" as string]: category.color }}
+    >
+      {active && (
+        <motion.span
+          layoutId="cat-halo"
+          className="pointer-events-none absolute inset-0 rounded-2xl"
+          style={{
+            boxShadow:
+              "0 6px 18px color-mix(in oklab, var(--cat) 35%, transparent), inset 0 0 0 1.5px var(--cat)",
+          }}
+          transition={{ type: "spring", stiffness: 360, damping: 30 }}
+        />
+      )}
+      <span className="relative text-[22px] leading-none">{category.icon}</span>
+      <span className="relative line-clamp-2 px-1 text-center">{category.name}</span>
+    </motion.button>
+  );
 }
