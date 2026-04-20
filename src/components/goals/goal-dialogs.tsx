@@ -51,7 +51,7 @@ export function GoalCreateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent side="center">
+      <DialogContent side="auto">
         <DialogTitle>Новая цель</DialogTitle>
         <DialogDescription>Ориентир, а не обязательство. Можно менять в любой момент.</DialogDescription>
 
@@ -160,7 +160,7 @@ export function GoalContributeDialog({
 
   return (
     <Dialog open={!!goal} onOpenChange={onClose}>
-      <DialogContent side="center">
+      <DialogContent side="auto">
         <DialogTitle>Пополнить {goal?.icon}</DialogTitle>
         <DialogDescription>{goal?.name}</DialogDescription>
         <form

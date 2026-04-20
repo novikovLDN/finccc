@@ -55,8 +55,8 @@ export function BreakdownDonut() {
           </p>
         </div>
       ) : (
-        <div className="mt-4 flex items-center gap-5">
-          <div className="relative h-[180px] w-[180px] shrink-0">
+        <div className="mt-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
+          <div className="relative h-[170px] w-[170px] sm:h-[180px] sm:w-[180px] shrink-0">
             <ResponsiveContainer>
               <PieChart>
                 <Pie
@@ -104,7 +104,7 @@ export function BreakdownDonut() {
             </div>
           </div>
 
-          <ul className="flex-1 space-y-1.5">
+          <ul className="flex-1 space-y-1.5 w-full">
             {data.map((d, i) => (
               <motion.li
                 key={d.name}

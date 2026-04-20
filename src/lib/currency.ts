@@ -31,7 +31,7 @@ export function toMajor(amountMinor: number, currency: CurrencyCode = "RUB"): nu
   return amountMinor / 10 ** digits;
 }
 
-/** Format minor units for display: 125055 + RUB → "1 250,55 ₽" */
+/** Format minor units for display: 125055 + RUB → "1 250,55 ₽". */
 export function formatMoney(
   amountMinor: number,
   currency: CurrencyCode = "RUB",
@@ -40,17 +40,43 @@ export function formatMoney(
   const { locale = DEFAULT_LOCALE, compact = false, signDisplay = "auto" } = opts;
   const digits = CURRENCIES[currency].minorDigits;
   const major = amountMinor / 10 ** digits;
+  const symbol = CURRENCIES[currency].symbol;
+
+  // Кастомный компакт: 12 345 → 12,3K; 1 250 000 → 1,25M; 4 200 000 000 → 4,2B
+  // Стандартный Intl compact в ru-RU даёт "тыс. ₽" — переносится и выглядит ломано.
+  if (compact && Math.abs(major) >= 1000) {
+    const sign = major < 0 ? "−" : signDisplay === "always" ? "+" : "";
+    const abs = Math.abs(major);
+    let value: number;
+    let suffix: string;
+    if (abs >= 1_000_000_000) {
+      value = abs / 1_000_000_000;
+      suffix = "B";
+    } else if (abs >= 1_000_000) {
+      value = abs / 1_000_000;
+      suffix = "M";
+    } else {
+      value = abs / 1000;
+      suffix = "K";
+    }
+    const decimals = value >= 100 ? 0 : value >= 10 ? 1 : 2;
+    const num = new Intl.NumberFormat(locale, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: decimals,
+    }).format(value);
+    return `${sign}${num}${suffix}\u00A0${symbol}`;
+  }
+
   try {
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
       minimumFractionDigits: compact ? 0 : digits,
       maximumFractionDigits: digits,
-      notation: compact ? "compact" : "standard",
       signDisplay,
     }).format(major);
   } catch {
-    return `${major.toFixed(digits)} ${CURRENCIES[currency].symbol}`;
+    return `${major.toFixed(digits)} ${symbol}`;
   }
 }
 

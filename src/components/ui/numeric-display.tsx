@@ -21,10 +21,10 @@ export interface NumericDisplayProps {
 }
 
 const SIZE_CLASS: Record<NonNullable<NumericDisplayProps["size"]>, string> = {
-  display: "text-[clamp(2.5rem,5vw,3.5rem)] leading-[1.05]",
-  h1: "text-[2.5rem] leading-[1.1]",
-  h2: "text-[2rem] leading-[1.15]",
-  h3: "text-[1.5rem] leading-[1.2]",
+  display: "text-[clamp(1.75rem,7vw,3rem)] leading-[1.1]",
+  h1: "text-[clamp(1.5rem,5vw,2.25rem)] leading-[1.15]",
+  h2: "text-[clamp(1.25rem,4vw,1.875rem)] leading-[1.2]",
+  h3: "text-[1.375rem] leading-[1.25]",
 };
 
 const TONE_CLASS: Record<NonNullable<NumericDisplayProps["tone"]>, string> = {
@@ -59,7 +59,12 @@ export function NumericDisplay({
 
   return (
     <motion.span
-      className={cn("tabular font-semibold tracking-tight", SIZE_CLASS[size], TONE_CLASS[tone], className)}
+      className={cn(
+        "tabular font-semibold tracking-tight whitespace-nowrap",
+        SIZE_CLASS[size],
+        TONE_CLASS[tone],
+        className,
+      )}
     >
       {display}
     </motion.span>

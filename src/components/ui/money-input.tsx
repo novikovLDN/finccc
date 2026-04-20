@@ -159,8 +159,8 @@ export const MoneyInput = React.forwardRef<HTMLInputElement, MoneyInputProps>(
 
     const sizing =
       size === "lg"
-        ? "h-[64px] text-[28px]"
-        : "h-[56px] text-[22px]";
+        ? "h-[60px] text-[24px] sm:text-[28px]"
+        : "h-[52px] text-[20px] sm:text-[22px]";
 
     return (
       <motion.div
@@ -172,7 +172,7 @@ export const MoneyInput = React.forwardRef<HTMLInputElement, MoneyInputProps>(
         }}
         transition={{ duration: 0.15, ease: [0.33, 1, 0.68, 1] }}
         className={cn(
-          "flex items-stretch gap-0 rounded-2xl border bg-[var(--surface-1)]",
+          "flex items-stretch overflow-hidden rounded-2xl border bg-[var(--surface-1)]",
           className,
         )}
         style={{ borderColor: "var(--border-strong)" }}
@@ -187,13 +187,12 @@ export const MoneyInput = React.forwardRef<HTMLInputElement, MoneyInputProps>(
           onChange={handleChange}
           onFocus={(e) => {
             setFocused(true);
-            // Выделяем всё при получении фокуса — удобнее редактировать
             if (valueMinor != null) e.target.select();
           }}
           onBlur={handleBlur}
           placeholder="0"
           className={cn(
-            "tabular flex-1 bg-transparent px-5 font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none min-w-0",
+            "tabular flex-1 bg-transparent px-4 sm:px-5 font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none min-w-0",
             sizing,
           )}
           {...props}
@@ -230,14 +229,14 @@ function CurrencyPicker({
           type="button"
           aria-label="Валюта"
           className={cn(
-            "group tabular inline-flex shrink-0 items-center gap-1.5 border-l border-[var(--border-subtle)] pl-4 pr-3 text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)] rounded-r-2xl",
-            size === "lg" ? "text-base" : "text-sm",
+            "group tabular inline-flex shrink-0 items-center gap-1 border-l border-[var(--border-subtle)] bg-[var(--surface-2)] pl-3 pr-2.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--accent-primary-soft)] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)]",
+            size === "lg" ? "text-base" : "text-[13px]",
           )}
         >
           <span className="font-semibold">{CURRENCIES[current].symbol}</span>
-          <span className="text-[11px] font-medium text-[var(--text-tertiary)]">{current}</span>
+          <span className="text-[10px] font-medium text-[var(--text-tertiary)]">{current}</span>
           <ChevronDown
-            className="size-3.5 transition-transform group-data-[state=open]:rotate-180"
+            className="size-3 transition-transform group-data-[state=open]:rotate-180"
             aria-hidden
           />
         </button>

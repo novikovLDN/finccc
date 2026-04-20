@@ -121,7 +121,7 @@ export function TransactionDrawer({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent side="right" onKeyDown={handleKey as unknown as React.KeyboardEventHandler<HTMLDivElement>}>
+      <DialogContent side="auto" onKeyDown={handleKey as unknown as React.KeyboardEventHandler<HTMLDivElement>}>
         <DialogTitle>{editing ? "Редактировать операцию" : "Новая операция"}</DialogTitle>
         <DialogDescription>Занимает секунд 10. Всё можно поменять позже.</DialogDescription>
 

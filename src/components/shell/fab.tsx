@@ -37,7 +37,7 @@ export function FAB({ onClick }: { onClick: () => void }) {
       }}
       whileHover={{ y: -2, scale: 1.04 }}
       whileTap={{ scale: 0.94 }}
-      className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
+      className="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] bottom-[calc(env(safe-area-inset-bottom,0px)+88px)] md:bottom-6 md:right-6"
       style={{
         background:
           "linear-gradient(135deg, var(--accent-primary), color-mix(in oklab, var(--accent-primary) 55%, var(--accent-mint)))",

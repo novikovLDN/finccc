@@ -69,11 +69,11 @@ export function DashboardView() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-5">
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 sm:gap-5 pt-2">
       <section className="flex items-end justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-[28px] font-semibold tracking-tight">{greeting}</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+          <h1 className="text-[22px] sm:text-[28px] font-semibold tracking-tight">{greeting}</h1>
+          <p className="mt-1 text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
             {txnsCount > 0
               ? "Ваш месяц, ваш ритм. Всё здесь."
               : "Здесь появится картина ваших финансов. Начнём с первой операции?"}

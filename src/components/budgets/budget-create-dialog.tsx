@@ -63,7 +63,7 @@ export function BudgetCreateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent side="center">
+      <DialogContent side="auto">
         <DialogTitle>Новый бюджет</DialogTitle>
         <DialogDescription>
           Мягкий лимит, который мы покажем как ориентир. Ничего не ограничиваем.
