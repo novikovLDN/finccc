@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,6 +12,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-geist-mono",
+});
+
+/**
+ * Fraunces — variable serif с широким диапазоном экспрессии.
+ * Используем ТОЛЬКО для display/hero-заголовков на landing.
+ */
+const fraunces = Fraunces({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-fraunces",
+  axes: ["SOFT", "WONK", "opsz"],
 });
 
 export const metadata: Metadata = {
@@ -42,7 +53,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ru" suppressHydrationWarning className={`${inter.variable} ${geistMono.variable}`}>
+    <html
+      lang="ru"
+      suppressHydrationWarning
+      className={`${inter.variable} ${geistMono.variable} ${fraunces.variable}`}
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
