@@ -13,6 +13,7 @@ import { budgetStatus } from "@/lib/formulas";
 import type { Budget, BudgetPeriodType } from "@/lib/types";
 import type { CurrencyCode } from "@/lib/currency";
 import { formatMoney } from "@/lib/currency";
+import { PageHeader, TitleItalic } from "@/components/shell/page-header";
 
 // Lazy load: форма создания открывается только по кнопке
 const BudgetCreateDialog = dynamic(
@@ -38,19 +39,26 @@ export default function BudgetsPage() {
   if (!hydrated) return null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-5">
-      <section className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] font-semibold tracking-tight">Бюджеты</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            Мягкие лимиты. Никаких красных чисел — только ориентиры.
-          </p>
-        </div>
-        <Button onClick={() => setOpen(true)}>
-          <Plus className="size-4" aria-hidden />
-          Новый бюджет
-        </Button>
-      </section>
+    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-6 pt-2">
+      <PageHeader
+        kicker={`Бюджеты · ${budgets.length}`}
+        title={
+          <>
+            Мягкие{" "}
+            <TitleItalic>ориентиры</TitleItalic>
+            , а не жёсткие стены
+          </>
+        }
+        subtitle="Без красных цифр. Показываем прогноз до конца периода — вы решаете, менять ли ритм."
+        trailing={
+          <Button onClick={() => setOpen(true)}>
+            <Plus className="size-4" aria-hidden />
+            Новый бюджет
+          </Button>
+        }
+      />
+
+      <div className="h-px bg-gradient-to-r from-[var(--warm-line)] to-transparent" aria-hidden />
 
       {budgets.length === 0 ? (
         <GlassCard className="p-10 text-center">

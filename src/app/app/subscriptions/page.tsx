@@ -11,6 +11,7 @@ import { NumericDisplay } from "@/components/ui/numeric-display";
 import { formatMoney } from "@/lib/currency";
 import { findRate } from "@/lib/store/data-store";
 import { monthlyEquivalent as monthlyEq } from "@/lib/formulas";
+import { PageHeader, TitleItalic } from "@/components/shell/page-header";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 dayjs.locale("ru");
@@ -49,19 +50,26 @@ export default function SubscriptionsPage() {
   if (!hydrated) return null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-5">
-      <section className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] font-semibold tracking-tight">Подписки</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            Определяются автоматически из повторяющихся операций. Ничего не отменяем — только показываем.
-          </p>
-        </div>
-        <Button variant="secondary" onClick={refresh}>
-          <RefreshCw className="size-4" aria-hidden />
-          Обновить
-        </Button>
-      </section>
+    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-6 pt-2">
+      <PageHeader
+        kicker={`Подписки · активных ${active.length}`}
+        title={
+          <>
+            Все ваши{" "}
+            <TitleItalic>регулярные</TitleItalic>
+            {" "}платежи одной картиной
+          </>
+        }
+        subtitle="Находим автоматически из повторяющихся операций. Не отменяем в банке — только помечаем у себя."
+        trailing={
+          <Button variant="secondary" onClick={refresh}>
+            <RefreshCw className="size-4" aria-hidden />
+            Обновить
+          </Button>
+        }
+      />
+
+      <div className="h-px bg-gradient-to-r from-[var(--warm-line)] to-transparent" aria-hidden />
 
       {/* Summary */}
       {active.length > 0 && (

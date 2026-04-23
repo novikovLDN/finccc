@@ -13,6 +13,8 @@ import { projectGoal, requiredMonthlyContribution } from "@/lib/formulas";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 dayjs.locale("ru");
+import { PageHeader, TitleItalic } from "@/components/shell/page-header";
+import { StaggerReveal } from "@/components/shell/stagger-reveal";
 
 // Lazy-загружаем формы — открываются только по клику
 const GoalCreateDialog = dynamic(
@@ -35,20 +37,28 @@ export default function GoalsPage() {
 
   if (!hydrated) return null;
 
+  const activeGoals = goals.filter((g) => !g.archivedAt);
   return (
-    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-5">
-      <section className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] font-semibold tracking-tight">Цели</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            Цели — это ориентир, а не обязательство. Движемся с комфортной скоростью.
-          </p>
-        </div>
-        <Button onClick={() => setCreateOpen(true)}>
-          <Plus className="size-4" aria-hidden />
-          Новая цель
-        </Button>
-      </section>
+    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-6 pt-2">
+      <PageHeader
+        kicker={`Цели · активных ${activeGoals.length}`}
+        title={
+          <>
+            Ваши{" "}
+            <TitleItalic>ориентиры</TitleItalic>
+            , не обязательства
+          </>
+        }
+        subtitle="Движемся с комфортной скоростью. Если ритм сбился — это нормально, перестраиваем."
+        trailing={
+          <Button onClick={() => setCreateOpen(true)}>
+            <Plus className="size-4" aria-hidden />
+            Новая цель
+          </Button>
+        }
+      />
+
+      <div className="h-px bg-gradient-to-r from-[var(--warm-line)] to-transparent" aria-hidden />
 
       {goals.length === 0 ? (
         <GlassCard className="p-10 text-center">

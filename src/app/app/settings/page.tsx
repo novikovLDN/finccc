@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { PageHeader, TitleItalic } from "@/components/shell/page-header";
 
 /**
  * Settings (TZ 7.10).
@@ -41,13 +42,19 @@ export default function SettingsPage() {
   if (!hydrated) return null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[820px] flex-col gap-5">
-      <section>
-        <h1 className="text-[24px] font-semibold tracking-tight">Настройки</h1>
-        <p className="mt-1 text-sm text-[var(--text-secondary)]">
-          Ваши данные — ваша собственность. В любой момент — экспорт или удаление.
-        </p>
-      </section>
+    <div className="mx-auto flex w-full max-w-[820px] flex-col gap-6 pt-2">
+      <PageHeader
+        kicker="Настройки · профиль"
+        title={
+          <>
+            Ваши данные — {" "}
+            <TitleItalic>ваша собственность</TitleItalic>
+          </>
+        }
+        subtitle="Полный экспорт или удаление — в любой момент. Никому не передаём."
+      />
+
+      <div className="h-px bg-gradient-to-r from-[var(--warm-line)] to-transparent" aria-hidden />
 
       {/* Appearance */}
       <GlassCard className="p-5">
