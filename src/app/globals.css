@@ -463,23 +463,24 @@ body > * {
 }
 
 /* =========================================================
-   Landing palette — editorial fintech (warm cream + ink)
+   Landing palette — Midnight Mercury (dark-first fintech).
+   Согласовано с app под единый бренд.
    ========================================================= */
 .landing-theme {
-  --lp-cream: #F8F4EC;
-  --lp-cream-deep: #EFE7D7;
-  --lp-paper: #FDFBF6;
-  --lp-ink: #1A1612;
-  --lp-ink-soft: #524940;
-  --lp-ink-muted: #8A7F74;
-  --lp-line: #D9CFBD;
-  --lp-line-soft: #E8DFCD;
-  --lp-accent: #1E3A2E;          /* hunter-green: доверие, спокойствие */
-  --lp-accent-soft: #DCE5DE;
-  --lp-honey: #D4A73E;            /* теплый акцент, никакого agressive */
-  --lp-blush: #E8B4A0;            /* мягкое выделение */
-  --lp-violet: #5E5AE8;           /* бренд-якорь, редко */
-  --lp-shadow-warm: 20 22 14;
+  --lp-cream: #0A0B10;              /* base near-black */
+  --lp-cream-deep: #131520;         /* раised surface */
+  --lp-paper: #1B1D28;              /* card surface */
+  --lp-ink: #F5F5F7;                /* primary text */
+  --lp-ink-soft: #A1A1AA;           /* secondary text */
+  --lp-ink-muted: #6B6B74;          /* tertiary text */
+  --lp-line: rgba(255, 255, 255, 0.12);
+  --lp-line-soft: rgba(255, 255, 255, 0.06);
+  --lp-accent: #3EEBAE;             /* signature mint */
+  --lp-accent-soft: rgba(62, 235, 174, 0.14);
+  --lp-honey: #FCB847;              /* амбер accent */
+  --lp-blush: #FC8A6B;              /* для негативных цитат */
+  --lp-violet: #7DA9FF;             /* cobalt secondary */
+  --lp-shadow-warm: 0 0 0;
 }
 
 .landing-theme .font-serif {
@@ -492,7 +493,7 @@ body > * {
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
 }
 
-/* Мелкая бумажная «зернистость» — дорогой приём для warm-бренда */
+/* Fine grid overlay для dark-fintech — precision feel */
 .landing-paper {
   position: relative;
 }
@@ -501,11 +502,13 @@ body > * {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.35;
-  mix-blend-mode: multiply;
+  opacity: 0.4;
   background-image:
-    radial-gradient(rgba(26, 22, 18, 0.05) 0.7px, transparent 0.7px);
-  background-size: 3px 3px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 20%, transparent 95%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 20%, transparent 95%);
 }
 
 /* =========================================================
