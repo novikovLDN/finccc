@@ -38,7 +38,15 @@ export function Sidebar() {
           <span className="font-semibold text-white">M</span>
         </div>
         {!collapsed && (
-          <span className="truncate text-[15px] font-semibold tracking-tight">Mindful Money</span>
+          <span
+            className="font-display truncate text-[17px] font-medium"
+            style={{
+              fontVariationSettings: '"SOFT" 45, "opsz" 144',
+              letterSpacing: "-0.015em",
+            }}
+          >
+            Mindful Money
+          </span>
         )}
       </div>
 
@@ -82,7 +90,11 @@ export function Sidebar() {
       <div className="mt-auto flex flex-col gap-1 px-2">
         {!collapsed && (
           <p className="px-1 text-[11px] leading-snug text-[var(--text-tertiary)]">
-            Это наблюдения, а не финансовый совет. Решение всегда за вами.
+            Это{" "}
+            <span className="font-display-italic" style={{ color: "var(--hunter)" }}>
+              наблюдения
+            </span>
+            , а не финансовый совет. Решение всегда за&nbsp;вами.
           </p>
         )}
         <button

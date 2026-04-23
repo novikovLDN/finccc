@@ -132,12 +132,21 @@ export function InsightFeed({ insights }: { insights: Insight[] }) {
           aria-label="Лента инсайтов"
         >
           <div className="flex h-dvh flex-col gap-3 p-4 sticky top-0 w-[320px]">
-            <div className="flex items-center justify-between px-1">
-              <h3 className="text-[13px] font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-                Инсайты
-              </h3>
-              <span className="text-[11px] text-[var(--text-tertiary)]">
-                до 3 в неделю
+            <div className="flex items-end justify-between px-1 border-b border-[var(--warm-line)] pb-3">
+              <div>
+                <div className="kicker">Лента</div>
+                <h3
+                  className="font-display mt-1 text-[20px] font-medium leading-none"
+                  style={{
+                    fontVariationSettings: '"SOFT" 45, "opsz" 144',
+                    letterSpacing: "-0.015em",
+                  }}
+                >
+                  Инсайты
+                </h3>
+              </div>
+              <span className="text-[10.5px] font-mono uppercase tracking-[0.18em] text-[var(--text-tertiary)] pb-0.5">
+                до 3 / нед.
               </span>
             </div>
             <div className="flex flex-col gap-3 overflow-y-auto pr-1">

@@ -8,8 +8,7 @@ import { formatMoney } from "@/lib/currency";
 import { ProgressBar } from "@/components/ui/progress";
 
 /**
- * Burn rate projection (TZ 8.3.1).
- * Адаптивно: компактное число, мягкий копирайт по TZ 9.3.
+ * Burn projection (TZ 8.3.1) с Fraunces-числом и editorial-копирайтом.
  */
 export function BurnProjectionCard() {
   const txns = useDataStore((s) => s.transactions);
@@ -24,15 +23,21 @@ export function BurnProjectionCard() {
 
   return (
     <GlassCard live className="p-5 sm:p-6">
-      <div className="text-[11px] sm:text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-        Прогноз месяца
-      </div>
+      <div className="kicker">Прогноз месяца</div>
       <div className="mt-3">
-        <div className="tabular whitespace-nowrap text-[24px] sm:text-[28px] font-semibold leading-none">
+        <div
+          className="font-display whitespace-nowrap text-[clamp(1.5rem,3.5vw,2rem)] font-medium leading-none"
+          style={{
+            fontVariationSettings: '"SOFT" 40, "opsz" 144',
+            letterSpacing: "-0.015em",
+            color: "var(--text-primary)",
+          }}
+        >
           {formatMoney(proj.projectedMonthTotal, base, { compact: useCompact })}
         </div>
-        <div className="mt-2 text-xs text-[var(--text-secondary)] leading-relaxed">
-          Если ритм сохранится — выйдет примерно столько. Это точка вашего выбора.
+        <div className="mt-2.5 text-[12.5px] leading-relaxed text-[var(--text-secondary)]">
+          Если ритм сохранится — выйдет примерно столько.{" "}
+          <span className="font-display-italic">Точка вашего выбора.</span>
         </div>
       </div>
       <div className="mt-4">
