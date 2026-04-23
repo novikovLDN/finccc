@@ -47,10 +47,8 @@ export function PeriodComparison() {
   ];
 
   return (
-    <GlassCard live className="p-6">
-      <div className="text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-        Сравнение периодов
-      </div>
+    <GlassCard live className="p-5 sm:p-6">
+      <div className="kicker">Сравнение периодов</div>
       <ul className="mt-4 space-y-4">
         {rows.map((r) => {
           const delta = r.current - r.previous;

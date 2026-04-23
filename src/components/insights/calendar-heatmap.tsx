@@ -50,12 +50,12 @@ export function CalendarHeatmap({ days = 84 }: { days?: number }) {
   const height = 7 * (size + gap);
 
   return (
-    <GlassCard live className="p-6">
+    <GlassCard live className="p-5 sm:p-6">
       <div className="flex items-center justify-between">
-        <div className="text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          Темп по дням
-        </div>
-        <span className="text-[11px] text-[var(--text-tertiary)]">{days} дней</span>
+        <div className="kicker">Темп по дням</div>
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+          {days} дней
+        </span>
       </div>
 
       <div className="mt-4 overflow-x-auto">
@@ -79,7 +79,7 @@ export function CalendarHeatmap({ days = 84 }: { days?: number }) {
                     ? "transparent"
                     : c.value === 0
                       ? "var(--surface-3)"
-                      : `color-mix(in oklab, var(--accent-primary) ${10 + intensity * 75}%, transparent)`
+                      : `color-mix(in oklab, var(--hunter) ${10 + intensity * 75}%, transparent)`
                 }
               >
                 <title>
@@ -98,7 +98,7 @@ export function CalendarHeatmap({ days = 84 }: { days?: number }) {
             key={i}
             className="h-3 w-3 rounded-[3px]"
             style={{
-              background: `color-mix(in oklab, var(--accent-primary) ${v * 100}%, transparent)`,
+              background: `color-mix(in oklab, var(--hunter) ${v * 100}%, transparent)`,
             }}
           />
         ))}

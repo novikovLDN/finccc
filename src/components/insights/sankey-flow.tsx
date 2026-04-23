@@ -85,12 +85,12 @@ export function SankeyFlow() {
   }, [data, size]);
 
   return (
-    <GlassCard live className="p-6">
+    <GlassCard live className="p-5 sm:p-6">
       <div className="flex items-center justify-between">
-        <div className="text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          Потоки денег
-        </div>
-        <span className="text-[11px] text-[var(--text-tertiary)]">Доход → категории</span>
+        <div className="kicker">Потоки денег</div>
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+          доход → категории
+        </span>
       </div>
       <div ref={containerRef} className="mt-4">
         {!rendered ? (

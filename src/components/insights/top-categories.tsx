@@ -24,9 +24,12 @@ export function TopCategories() {
   );
 
   return (
-    <GlassCard live className="p-6">
-      <div className="text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-        Топ-5 категорий
+    <GlassCard live className="p-5 sm:p-6">
+      <div className="flex items-end justify-between">
+        <div className="kicker">Топ-5 категорий</div>
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+          за период
+        </span>
       </div>
       {breakdown.length === 0 ? (
         <p className="mt-4 text-sm text-[var(--text-secondary)]">
