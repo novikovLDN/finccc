@@ -6,6 +6,8 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { TopCategories } from "@/components/insights/top-categories";
 import { PeriodComparison } from "@/components/insights/period-comparison";
 import { useDataStore } from "@/lib/store/data-store";
+import { PageHeader, TitleItalic } from "@/components/shell/page-header";
+import { StaggerReveal } from "@/components/shell/stagger-reveal";
 
 // Heavy charts lazy-loaded (TZ 10.7 budget)
 const SankeyFlow = dynamic(
@@ -37,28 +39,39 @@ export default function InsightsPage() {
   if (!hydrated) return null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-5">
-      <section>
-        <h1 className="text-[24px] font-semibold tracking-tight">Аналитика</h1>
-        <p className="mt-1 text-sm text-[var(--text-secondary)]">
-          Ваши паттерны — без оценок и цифрами. Стрелочки нейтральные.
-        </p>
-      </section>
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 pt-2">
+      <PageHeader
+        kicker="Аналитика · паттерны"
+        title={
+          <>
+            Картины вашего{" "}
+            <TitleItalic>ритма</TitleItalic>
+            , без оценок
+          </>
+        }
+        subtitle="Стрелки нейтральные. Никакого красно-зелёного кодирования. Только факты."
+      />
+
+      <div className="h-px bg-gradient-to-r from-[var(--warm-line)] to-transparent" aria-hidden />
 
       {txnsCount < 5 ? (
         <GlassCard className="p-10 text-center">
-          <p className="text-[15px] font-medium">Для аналитики нужно больше операций.</p>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+          <p className="font-display text-[20px] font-medium">Для аналитики нужно больше операций.</p>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">
             Инсайты появятся, когда накопится 7+ дней данных. А пока — вы можете исследовать операции вручную.
           </p>
         </GlassCard>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <StaggerReveal
+          className="grid gap-4 md:grid-cols-2"
+          stagger={0.08}
+          startDelay={0.22}
+        >
           <SankeyFlow />
           <TopCategories />
           <PeriodComparison />
           <CalendarHeatmap />
-        </div>
+        </StaggerReveal>
       )}
     </div>
   );

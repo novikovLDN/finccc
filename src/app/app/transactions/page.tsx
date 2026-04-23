@@ -17,6 +17,7 @@ import {
 import { Chip } from "@/components/ui/chip";
 import { useDataStore } from "@/lib/store/data-store";
 import { useTransactions } from "@/components/transactions/transactions-context";
+import { PageHeader, TitleItalic } from "@/components/shell/page-header";
 import type { Transaction, TxnType } from "@/lib/types";
 import { formatMoney } from "@/lib/currency";
 import dayjs from "dayjs";
@@ -83,20 +84,29 @@ export default function TransactionsPage() {
 
   if (!hydrated) return null;
 
+  const activeCount = txns.filter((t) => !t.deletedAt).length;
+
   return (
-    <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-5">
-      <section className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-[24px] font-semibold tracking-tight">Операции</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            Все доходы и расходы. Редактируется кликом по строке.
-          </p>
-        </div>
-        <Button onClick={() => openNew("expense")}>
-          <Plus className="size-4" aria-hidden />
-          Новая операция
-        </Button>
-      </section>
+    <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-6 pt-2">
+      <PageHeader
+        kicker={`Операции · всего ${activeCount}`}
+        title={
+          <>
+            Ваш{" "}
+            <TitleItalic>тихий журнал</TitleItalic>
+            {" "}трат и доходов
+          </>
+        }
+        subtitle="Редактируется кликом по строке. Удалённое возвращается в течение 10 секунд."
+        trailing={
+          <Button onClick={() => openNew("expense")}>
+            <Plus className="size-4" aria-hidden />
+            Новая операция
+          </Button>
+        }
+      />
+
+      <div className="h-px bg-gradient-to-r from-[var(--warm-line)] to-transparent" aria-hidden />
 
       {/* Filters */}
       <GlassCard className="flex flex-wrap items-center gap-3 p-3">
