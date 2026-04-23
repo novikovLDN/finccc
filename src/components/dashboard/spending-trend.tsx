@@ -61,8 +61,12 @@ export function SpendingTrend() {
             <AreaChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
               <defs>
                 <linearGradient id="mm-spending" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--hunter)" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="var(--hunter)" stopOpacity={0} />
+                  <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity={0.32} />
+                  <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="mm-spending-stroke" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="var(--accent-primary)" />
+                  <stop offset="100%" stopColor="var(--accent-sky)" />
                 </linearGradient>
               </defs>
               <XAxis
@@ -79,7 +83,7 @@ export function SpendingTrend() {
                 tickFormatter={(v) => formatMoney(Number(v), base, { compact: true })}
               />
               <Tooltip
-                cursor={{ stroke: "var(--hunter)", strokeOpacity: 0.25 }}
+                cursor={{ stroke: "var(--accent-primary)", strokeOpacity: 0.25 }}
                 content={({ payload }) => {
                   if (!payload?.[0]) return null;
                   const p = payload[0].payload as (typeof data)[number];
@@ -96,14 +100,14 @@ export function SpendingTrend() {
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="var(--hunter)"
-                strokeWidth={2}
+                stroke="url(#mm-spending-stroke)"
+                strokeWidth={2.2}
                 fill="url(#mm-spending)"
-                animationDuration={1000}
+                animationDuration={1200}
                 animationEasing="ease-out"
                 activeDot={{
                   r: 4,
-                  fill: "var(--hunter)",
+                  fill: "var(--accent-primary)",
                   stroke: "var(--surface-1)",
                   strokeWidth: 2,
                 }}

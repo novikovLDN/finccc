@@ -79,7 +79,7 @@ export function CalendarHeatmap({ days = 84 }: { days?: number }) {
                     ? "transparent"
                     : c.value === 0
                       ? "var(--surface-3)"
-                      : `color-mix(in oklab, var(--hunter) ${10 + intensity * 75}%, transparent)`
+                      : `color-mix(in oklab, var(--accent-primary) ${10 + intensity * 75}%, transparent)`
                 }
               >
                 <title>
@@ -98,7 +98,7 @@ export function CalendarHeatmap({ days = 84 }: { days?: number }) {
             key={i}
             className="h-3 w-3 rounded-[3px]"
             style={{
-              background: `color-mix(in oklab, var(--hunter) ${v * 100}%, transparent)`,
+              background: `color-mix(in oklab, var(--accent-primary) ${v * 100}%, transparent)`,
             }}
           />
         ))}

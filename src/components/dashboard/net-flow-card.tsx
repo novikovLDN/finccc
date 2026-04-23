@@ -70,8 +70,21 @@ export function NetFlowCard() {
   }, [txns, range]);
 
   return (
-    <GlassCard live className="md:col-span-2 overflow-hidden p-5 sm:p-6">
-      <div className="flex items-start justify-between gap-3">
+    <GlassCard live className="relative md:col-span-2 overflow-hidden p-5 sm:p-6">
+      {/* Ambient prismatic glow top-right */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, var(--accent-primary-soft) 0%, transparent 70%)",
+          filter: "blur(24px)",
+        }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.9, 0.6] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="relative flex items-start justify-between gap-3">
         <div className="kicker">Net flow · {periodLabel(period)}</div>
         {rate != null && (
           <motion.span
@@ -177,9 +190,13 @@ function MiniSparkline({ values }: { values: number[] }) {
     <div className="mt-4 -mx-1">
       <svg viewBox={`0 0 ${W} ${H}`} className="h-12 w-full">
         <defs>
+          <linearGradient id="net-spark-stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--accent-primary)" />
+            <stop offset="100%" stopColor="var(--accent-sky)" />
+          </linearGradient>
           <linearGradient id="net-spark-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--hunter)" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="var(--hunter)" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0" />
           </linearGradient>
         </defs>
         <motion.path
@@ -192,8 +209,8 @@ function MiniSparkline({ values }: { values: number[] }) {
         <motion.path
           d={path}
           fill="none"
-          stroke="var(--hunter)"
-          strokeWidth="1.8"
+          stroke="url(#net-spark-stroke)"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
           initial={{ pathLength: 0 }}
@@ -202,11 +219,14 @@ function MiniSparkline({ values }: { values: number[] }) {
         />
         {!reduce && (
           <motion.circle
-            r="3.5"
-            fill="var(--hunter)"
+            r="4"
+            fill="var(--accent-primary)"
             cx={dotX}
             cy={dotY}
-            style={{ opacity: dotOpacity, filter: "drop-shadow(0 0 6px rgba(30,58,46,0.5))" }}
+            style={{
+              opacity: dotOpacity,
+              filter: "drop-shadow(0 0 8px rgba(14,170,123,0.7))",
+            }}
           />
         )}
       </svg>

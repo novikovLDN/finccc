@@ -24,8 +24,21 @@ export function BurnProjectionCard() {
       : 0;
 
   return (
-    <GlassCard live className="p-5 sm:p-6">
-      <div className="flex items-start justify-between gap-3">
+    <GlassCard live className="relative overflow-hidden p-5 sm:p-6">
+      {/* Ambient prismatic glow bottom-left */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-12 -left-12 h-32 w-32 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, var(--accent-sky-soft) 0%, transparent 70%)",
+          filter: "blur(24px)",
+        }}
+        animate={{ scale: [1, 1.12, 1], opacity: [0.55, 0.85, 0.55] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+      />
+
+      <div className="relative flex items-start justify-between gap-3">
         <div className="kicker">Прогноз месяца</div>
         <motion.span
           initial={{ opacity: 0, scale: 0.9 }}
