@@ -41,8 +41,13 @@ export function TopBar({ onOpenPalette }: { onOpenPalette?: () => void }) {
                 <motion.span
                   layoutId="period-pill"
                   className="absolute inset-0 rounded-full"
-                  style={{ background: "var(--accent-primary)" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  style={{
+                    background:
+                      "linear-gradient(135deg, var(--hunter) 0%, color-mix(in oklab, var(--hunter) 80%, var(--honey)) 100%)",
+                    boxShadow:
+                      "0 4px 12px color-mix(in oklab, var(--hunter) 22%, transparent), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  }}
+                  transition={{ type: "spring", stiffness: 320, damping: 28 }}
                 />
               )}
               <span className="relative">{opt.label}</span>

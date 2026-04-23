@@ -31,11 +31,18 @@ export function Sidebar() {
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm"
           style={{
             background:
-              "linear-gradient(135deg, var(--accent-primary), color-mix(in oklab, var(--accent-primary) 60%, var(--accent-mint)))",
+              "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 100%)",
+            boxShadow:
+              "0 4px 14px color-mix(in oklab, var(--hunter) 24%, transparent), inset 0 1px 0 rgba(255,255,255,0.25)",
           }}
           aria-hidden
         >
-          <span className="font-semibold text-white">M</span>
+          <span
+            className="font-display font-medium text-[color:var(--warm-paper)]"
+            style={{ fontVariationSettings: '"SOFT" 60, "opsz" 96' }}
+          >
+            M
+          </span>
         </div>
         {!collapsed && (
           <span
@@ -69,16 +76,27 @@ export function Sidebar() {
               )}
             >
               {active && (
-                <motion.span
-                  layoutId="sidebar-active"
-                  className="absolute inset-0 rounded-xl"
-                  style={{ background: "var(--accent-primary-soft)" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
+                <>
+                  <motion.span
+                    layoutId="sidebar-active"
+                    className="absolute inset-0 rounded-xl"
+                    style={{
+                      background: "var(--hunter-soft)",
+                      boxShadow: "inset 0 0 0 1px color-mix(in oklab, var(--hunter) 18%, transparent)",
+                    }}
+                    transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                  />
+                  <motion.span
+                    layoutId="sidebar-active-bar"
+                    className="absolute left-0 top-1/2 h-5 w-[2.5px] -translate-y-1/2 rounded-full"
+                    style={{ background: "var(--hunter)" }}
+                    transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                  />
+                </>
               )}
               <Icon
                 className="relative size-[18px] shrink-0"
-                style={{ color: active ? "var(--accent-primary)" : undefined }}
+                style={{ color: active ? "var(--hunter)" : undefined }}
                 aria-hidden
               />
               {!collapsed && <span className="relative">{item.label}</span>}
