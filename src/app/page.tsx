@@ -358,15 +358,15 @@ function VoiceContrast() {
     <section
       id="voice"
       className="relative overflow-hidden"
-      style={{ background: "var(--lp-ink)", color: "var(--lp-cream)" }}
+      style={{ background: "linear-gradient(180deg, #131520 0%, #1B1D28 100%)", color: "#F5F5F7" }}
     >
-      {/* Warm vignette */}
+      {/* Prismatic vignette */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="pointer-events-none absolute inset-0 opacity-50"
         style={{
           background:
-            "radial-gradient(60% 60% at 80% 0%, rgba(212,167,62,0.2), transparent 60%), radial-gradient(50% 50% at 0% 100%, rgba(157,183,169,0.15), transparent 60%)",
+            "radial-gradient(60% 60% at 80% 0%, rgba(62,235,174,0.12), transparent 60%), radial-gradient(50% 50% at 0% 100%, rgba(125,169,255,0.10), transparent 60%)",
         }}
       />
 
@@ -392,7 +392,11 @@ function VoiceContrast() {
             style={{
               fontStyle: "italic",
               fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144',
-              color: "var(--lp-honey)",
+              background: "linear-gradient(135deg, #3EEBAE 0%, #7DA9FF 100%)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              color: "transparent",
             }}
           >
             и&nbsp;как говорим мы.
@@ -505,20 +509,22 @@ function FinalCTA() {
         className="relative overflow-hidden rounded-[32px] p-10 md:p-16"
         style={{
           background:
-            "linear-gradient(130deg, var(--lp-honey) 0%, #E4B859 65%, #EBC774 100%)",
-          color: "var(--lp-ink)",
+            "radial-gradient(100% 120% at 20% 0%, rgba(62,235,174,0.22) 0%, transparent 55%), radial-gradient(80% 100% at 100% 100%, rgba(125,169,255,0.18) 0%, transparent 60%), linear-gradient(180deg, #131520 0%, #0A0B10 100%)",
+          color: "#F5F5F7",
+          border: "1px solid rgba(62,235,174,0.18)",
+          boxShadow: "0 0 120px rgba(62,235,174,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
         {/* decorative serif ornament */}
         <div
           aria-hidden
-          className="absolute -right-16 -top-24 font-serif opacity-[0.12] pointer-events-none select-none"
+          className="absolute -right-16 -top-24 font-serif opacity-[0.08] pointer-events-none select-none"
           style={{
             fontSize: "24rem",
             lineHeight: 1,
             fontStyle: "italic",
             fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144',
-            color: "var(--lp-ink)",
+            color: "#3EEBAE",
           }}
         >
           &
@@ -535,21 +541,37 @@ function FinalCTA() {
             }}
           >
             Откройте приложение,{" "}
-            <em style={{ fontStyle: "italic", fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144' }}>
+            <em
+              style={{
+                fontStyle: "italic",
+                fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144',
+                background: "linear-gradient(135deg, #3EEBAE 0%, #7DA9FF 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
+              }}
+            >
               когда станет спокойно.
             </em>
           </h2>
-          <p className="mt-6 max-w-md text-[15px] leading-[1.7] text-[color:var(--lp-ink-soft)]">
+          <p className="mt-6 max-w-md text-[15px] leading-[1.7] text-white/60">
             Без регистрации, без рекламы, без передачи данных третьим сторонам.
             Вы решаете, когда и как пользоваться.
           </p>
           <Link
             href="/app"
-            className="group mt-10 inline-flex h-12 items-center gap-2 rounded-full bg-[color:var(--lp-ink)] pl-6 pr-3 text-[14px] font-medium text-[color:var(--lp-cream)] transition-transform hover:scale-[0.985]"
+            className="group mt-10 inline-flex h-12 items-center gap-2 rounded-full pl-6 pr-3 text-[14px] font-medium transition-transform hover:scale-[0.985]"
+            style={{
+              background: "linear-gradient(135deg, #0EAA7B 0%, #12C68E 45%, #2D9BD4 100%)",
+              color: "#ffffff",
+              boxShadow:
+                "0 10px 30px rgba(14,170,123,0.32), inset 0 1px 0 rgba(255,255,255,0.22)",
+            }}
           >
             Попробовать сейчас
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[color:var(--lp-honey)]">
-              <ArrowUpRight className="size-4 text-[color:var(--lp-ink)]" />
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
+              <ArrowUpRight className="size-4 text-white" />
             </span>
           </Link>
         </div>
