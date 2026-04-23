@@ -158,9 +158,10 @@ export function TransactionDrawer({
                       style={{
                         background:
                           opt.v === "income"
-                            ? "linear-gradient(135deg, var(--accent-mint), color-mix(in oklab, var(--accent-mint) 60%, var(--accent-sky)))"
-                            : "linear-gradient(135deg, var(--accent-primary), color-mix(in oklab, var(--accent-primary) 60%, var(--accent-mint)))",
-                        boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                            ? "linear-gradient(135deg, var(--accent-sky), color-mix(in oklab, var(--accent-sky) 65%, var(--hunter)))"
+                            : "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 55%, color-mix(in oklab, var(--hunter) 75%, var(--honey)) 100%)",
+                        boxShadow:
+                          "0 6px 18px color-mix(in oklab, var(--hunter) 28%, transparent), inset 0 1px 0 rgba(255,255,255,0.2)",
                       }}
                       transition={{ type: "spring", stiffness: 340, damping: 30 }}
                     />
@@ -302,10 +303,10 @@ function CategoryTile({
       whileTap={{ scale: 0.96 }}
       transition={{ type: "spring", stiffness: 400, damping: 24 }}
       className={cn(
-        "relative flex h-[76px] flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl border text-[11px] font-medium leading-tight transition-colors",
+        "relative flex h-[84px] flex-col items-center justify-center gap-1.5 overflow-hidden rounded-2xl border text-[11px] font-medium leading-tight transition-all duration-200",
         active
-          ? "border-[color:var(--cat)] bg-[color-mix(in_oklab,var(--cat)_16%,transparent)] text-[var(--text-primary)]"
-          : "border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-2)]",
+          ? "border-[color:var(--cat)] bg-[color-mix(in_oklab,var(--cat)_14%,transparent)] text-[var(--text-primary)]"
+          : "border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-secondary)] hover:border-[color:var(--cat)] hover:bg-[color-mix(in_oklab,var(--cat)_6%,var(--surface-1))] hover:text-[var(--text-primary)]",
       )}
       style={{ ["--cat" as string]: category.color }}
     >
@@ -315,12 +316,18 @@ function CategoryTile({
           className="pointer-events-none absolute inset-0 rounded-2xl"
           style={{
             boxShadow:
-              "0 6px 18px color-mix(in oklab, var(--cat) 35%, transparent), inset 0 0 0 1.5px var(--cat)",
+              "0 10px 26px color-mix(in oklab, var(--cat) 35%, transparent), inset 0 0 0 1.5px var(--cat)",
           }}
-          transition={{ type: "spring", stiffness: 360, damping: 30 }}
+          transition={{ type: "spring", stiffness: 340, damping: 28 }}
         />
       )}
-      <span className="relative text-[22px] leading-none">{category.icon}</span>
+      <motion.span
+        className="relative text-[24px] leading-none"
+        animate={active ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+        transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+      >
+        {category.icon}
+      </motion.span>
       <span className="relative line-clamp-2 px-1 text-center">{category.name}</span>
     </motion.button>
   );
