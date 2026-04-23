@@ -3,16 +3,16 @@
 import * as React from "react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { NumericDisplay } from "@/components/ui/numeric-display";
-import { TrendingUp, TrendingDown } from "lucide-react";
 import { totalIncome, totalExpenses, netFlow, savingsRate, periodRange } from "@/lib/formulas";
 import { useDataStore } from "@/lib/store/data-store";
 import { useShellStore } from "@/components/shell/store";
 import { formatMoney } from "@/lib/currency";
 
 /**
- * Net Flow widget (TZ 6.1, 8.2.3).
- * Большое число — compact для предотвращения переноса.
- * Под ним 2 mini-tile с доходами/расходами в фиксированной высоте.
+ * NetFlowCard (TZ 6.1, 8.2.3).
+ * Editorial-подача: Fraunces число, kicker mono-caps, hunter-green
+ * accent для положительного, нейтральный для отрицательного.
+ * Никакого красного. Savings rate в pill справа.
  */
 export function NetFlowCard() {
   const period = useShellStore((s) => s.period);
@@ -25,27 +25,35 @@ export function NetFlowCard() {
   const net = netFlow(txns, range);
   const rate = savingsRate(txns, range);
 
-  // Если число большое — используем compact (12,3K ₽), иначе полное.
   const useCompact = Math.abs(net) >= 1_000_000_00 || Math.abs(income) >= 1_000_000_00;
 
   return (
-    <GlassCard live className="md:col-span-2 p-5 sm:p-6">
-      <div className="flex items-center justify-between gap-2">
-        <div className="text-[11px] sm:text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          Net flow · {periodLabel(period)}
+    <GlassCard live className="md:col-span-2 overflow-hidden p-5 sm:p-6">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="kicker">Net flow · {periodLabel(period)}</div>
         </div>
         {rate != null && (
           <span
-            className="tabular shrink-0 rounded-full bg-[var(--accent-mint-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent-mint)]"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold"
+            style={{
+              background: rate >= 0 ? "var(--hunter-soft)" : "var(--surface-2)",
+              color: rate >= 0 ? "var(--hunter)" : "var(--text-secondary)",
+            }}
             title="Savings rate (TZ 8.2.4)"
           >
-            {rate >= 0 ? "+" : ""}
-            {rate.toFixed(1)}%
+            <span className="tabular">
+              {rate >= 0 ? "+" : ""}
+              {rate.toFixed(1)}%
+            </span>
+            <span className="hidden sm:inline text-[10px] font-medium uppercase tracking-wider opacity-70">
+              savings
+            </span>
           </span>
         )}
       </div>
 
-      <div className="mt-3 flex items-baseline gap-2">
+      <div className="mt-5 flex items-baseline gap-3">
         <NumericDisplay
           valueMinor={net}
           currency={base}
@@ -56,27 +64,47 @@ export function NetFlowCard() {
         />
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-2.5 sm:gap-3">
-        <div className="rounded-xl bg-[var(--surface-2)] p-3 sm:p-4 min-w-0">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-[var(--text-secondary)]">
-            <TrendingUp className="size-3.5 text-[var(--accent-sky)] shrink-0" aria-hidden />
-            <span>Доходы</span>
-          </div>
-          <div className="tabular mt-1 truncate text-[16px] sm:text-[20px] font-semibold text-[var(--accent-sky)]">
-            {formatMoney(income, base, { compact: useCompact })}
-          </div>
-        </div>
-        <div className="rounded-xl bg-[var(--surface-2)] p-3 sm:p-4 min-w-0">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-[var(--text-secondary)]">
-            <TrendingDown className="size-3.5 text-[var(--text-secondary)] shrink-0" aria-hidden />
-            <span>Расходы</span>
-          </div>
-          <div className="tabular mt-1 truncate text-[16px] sm:text-[20px] font-semibold text-[var(--text-primary)]">
-            {formatMoney(expenses, base, { compact: useCompact })}
-          </div>
-        </div>
+      <div className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3">
+        <TileRow
+          label="Доходы"
+          value={formatMoney(income, base, { compact: useCompact })}
+          tone="sky"
+        />
+        <TileRow
+          label="Расходы"
+          value={formatMoney(expenses, base, { compact: useCompact })}
+          tone="ink"
+        />
       </div>
     </GlassCard>
+  );
+}
+
+function TileRow({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone: "sky" | "ink";
+}) {
+  return (
+    <div className="rounded-2xl bg-[var(--surface-2)] p-3.5 sm:p-4">
+      <div className="text-[10.5px] font-medium uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+        {label}
+      </div>
+      <div
+        className="font-display mt-1.5 truncate text-[18px] sm:text-[22px] font-medium leading-none"
+        style={{
+          color: tone === "sky" ? "var(--accent-sky)" : "var(--text-primary)",
+          fontVariationSettings: '"SOFT" 40, "opsz" 144',
+          letterSpacing: "-0.015em",
+        }}
+      >
+        {value}
+      </div>
+    </div>
   );
 }
 
