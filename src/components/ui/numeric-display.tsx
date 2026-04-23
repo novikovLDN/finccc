@@ -21,8 +21,8 @@ export interface NumericDisplayProps {
 }
 
 const SIZE_CLASS: Record<NonNullable<NumericDisplayProps["size"]>, string> = {
-  display: "text-[clamp(1.75rem,7vw,3rem)] leading-[1.1]",
-  h1: "text-[clamp(1.5rem,5vw,2.25rem)] leading-[1.15]",
+  display: "font-display text-[clamp(2rem,7vw,3.5rem)] leading-[1.02] font-medium",
+  h1: "font-display text-[clamp(1.5rem,5vw,2.25rem)] leading-[1.1] font-medium",
   h2: "text-[clamp(1.25rem,4vw,1.875rem)] leading-[1.2]",
   h3: "text-[1.375rem] leading-[1.25]",
 };
@@ -57,14 +57,27 @@ export function NumericDisplay({
     mv.set(valueMinor);
   }, [valueMinor, mv]);
 
+  // Для display/h1 — Fraunces уже выставлен через font-display класс.
+  // Для h2/h3 — tabular (Geist Mono).
+  const isDisplay = size === "display" || size === "h1";
+
   return (
     <motion.span
       className={cn(
-        "tabular font-semibold tracking-tight whitespace-nowrap",
+        "tracking-tight whitespace-nowrap",
+        !isDisplay && "tabular font-semibold",
         SIZE_CLASS[size],
         TONE_CLASS[tone],
         className,
       )}
+      style={
+        isDisplay
+          ? {
+              fontFeatureSettings: '"tnum" 1, "cv11" 1',
+              fontVariationSettings: '"SOFT" 40, "opsz" 144',
+            }
+          : undefined
+      }
     >
       {display}
     </motion.span>

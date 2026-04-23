@@ -323,8 +323,58 @@ body {
 }
 
 /* =========================================================
+   App-level editorial tokens (используем и в /app).
+   Тёплые оттенки + Fraunces для hero-чисел и заголовков.
+   ========================================================= */
+:root {
+  --warm-paper: #FBF8F1;
+  --warm-cream: #F5F0E4;
+  --warm-ink: #1A1612;
+  --warm-ink-soft: #6A5F52;
+  --warm-ink-muted: #A39689;
+  --warm-line: #E8DFCD;
+  --hunter: #1E3A2E;
+  --hunter-soft: #DCE5DE;
+  --honey: #D4A73E;
+  --blush: #E8B4A0;
+}
+
+[data-theme="dark"] {
+  --warm-paper: #1C1A16;
+  --warm-cream: #242018;
+  --warm-ink: #F5F0E4;
+  --warm-ink-soft: #B8AC99;
+  --warm-ink-muted: #7A6F62;
+  --warm-line: #35302A;
+  --hunter: #5EEAD4;
+  --hunter-soft: rgba(94,234,212,0.14);
+  --honey: #E6BF56;
+  --blush: #F5C2A8;
+}
+
+.font-display {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 144;
+  letter-spacing: -0.02em;
+}
+.font-display-italic {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  letter-spacing: -0.01em;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--warm-ink-muted);
+}
+
+/* =========================================================
    Landing palette — editorial fintech (warm cream + ink)
-   Отдельная палитра для / (landing). Не влияет на /app.
    ========================================================= */
 .landing-theme {
   --lp-cream: #F8F4EC;
