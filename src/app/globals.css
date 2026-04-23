@@ -63,36 +63,37 @@
    ========================================================= */
 
 :root {
-  /* Light mode */
-  --bg-primary: #fafafe;
-  --bg-secondary: #f5f3ff;
-  --glass-tint: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.7);
-  --glass-shadow: 0 8px 32px rgba(20, 20, 40, 0.08);
-  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  /* Light mode — warm editorial paper */
+  --bg-primary: #FBF8F1;
+  --bg-secondary: #F5F0E4;
+  --glass-tint: rgba(253, 251, 246, 0.62);
+  --glass-border: rgba(255, 250, 240, 0.75);
+  --glass-shadow: 0 12px 36px rgba(26, 22, 18, 0.08);
+  --glass-inner: inset 0 1px 0 rgba(255, 252, 245, 0.9);
 
-  --text-primary: #1a1a2e;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
+  --text-primary: #1A1612;
+  --text-secondary: #6A5F52;
+  --text-tertiary: #A39689;
 
-  --accent-primary: #7c6fe8;
-  --accent-primary-soft: #ece9fd;
-  --accent-mint: #4ecdc4;
-  --accent-mint-soft: #dcf7f4;
-  --accent-peach: #ffb4a2;
-  --accent-peach-soft: #ffe4dc;
-  --accent-sky: #a5b4fc;
-  --accent-sky-soft: #e4e8fe;
+  /* Интерактивные элементы — hunter-green как главный, honey как warm-CTA */
+  --accent-primary: #1E3A2E;
+  --accent-primary-soft: #DCE5DE;
+  --accent-mint: #4A8B77;
+  --accent-mint-soft: #D6E6DF;
+  --accent-peach: #D4A73E;
+  --accent-peach-soft: #F5E7BF;
+  --accent-sky: #4C6BA3;
+  --accent-sky-soft: #DCE5F1;
 
-  --critical: #ef4444;
+  --critical: #C15A4A;
 
-  --surface-1: #ffffff;
-  --surface-2: #f5f3ff;
-  --surface-3: #ece9fd;
-  --border-subtle: rgba(26, 26, 46, 0.06);
-  --border-strong: rgba(26, 26, 46, 0.12);
+  --surface-1: #FDFBF6;
+  --surface-2: #F5F0E4;
+  --surface-3: #E8DFCD;
+  --border-subtle: rgba(26, 22, 18, 0.07);
+  --border-strong: rgba(26, 22, 18, 0.14);
 
-  --focus-ring: #7c6fe8;
+  --focus-ring: #1E3A2E;
 
   color-scheme: light;
 }
@@ -231,9 +232,28 @@ input:-webkit-autofill:focus {
 body {
   min-height: 100dvh;
   background:
-    radial-gradient(1200px 600px at 20% -10%, rgba(124, 111, 232, 0.09), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, rgba(78, 205, 196, 0.07), transparent 55%),
+    radial-gradient(1100px 600px at 15% -10%, rgba(30, 58, 46, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 115% 10%, rgba(212, 167, 62, 0.06), transparent 55%),
+    radial-gradient(700px 400px at 70% 110%, rgba(74, 139, 119, 0.05), transparent 55%),
     var(--bg-primary);
+  position: relative;
+}
+
+/* Paper-grain overlay — warm aesthetics */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(rgba(26, 22, 18, 0.5) 0.7px, transparent 0.7px);
+  background-size: 2.4px 2.4px;
+}
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {
