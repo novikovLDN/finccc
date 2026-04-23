@@ -30,47 +30,85 @@ export function InsightCard({
   onFeedback?: (id: string, useful: boolean) => void;
 }) {
   const [given, setGiven] = React.useState<null | boolean>(null);
-  const tone = insight.type === "positive" ? "var(--accent-mint)" : "var(--accent-primary)";
+  const isPositive = insight.type === "positive";
+  const accent = isPositive ? "#5EEAD4" : "var(--honey)";
 
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
-      className="glass glass-live rounded-2xl p-4"
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+      whileHover={{ y: -2 }}
+      className="relative overflow-hidden rounded-2xl p-4"
+      style={{
+        background: "#1A1612",
+        border: "1px solid rgba(255,255,255,0.08)",
+        boxShadow:
+          "0 18px 40px -16px rgba(20,22,14,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+      }}
     >
-      <div className="mb-2 flex items-center gap-2">
+      {/* Accent glow top-right */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-40"
+        style={{
+          background: `radial-gradient(circle, color-mix(in oklab, ${accent} 40%, transparent), transparent 70%)`,
+          filter: "blur(20px)",
+        }}
+      />
+
+      <div className="relative mb-2 flex items-center gap-1.5">
         <span
-          className="flex h-7 w-7 items-center justify-center rounded-lg"
-          style={{ background: `color-mix(in oklab, ${tone} 18%, transparent)` }}
+          className="flex h-5 w-5 items-center justify-center rounded-full"
+          style={{ background: `color-mix(in oklab, ${accent} 18%, transparent)` }}
           aria-hidden
         >
-          <Sparkles className="size-[14px]" style={{ color: tone }} />
+          <Sparkles className="size-[11px]" style={{ color: accent }} />
         </span>
-        <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+        <span
+          className="text-[9.5px] font-semibold uppercase tracking-[0.22em]"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+        >
           {labelFor(insight.type)}
         </span>
       </div>
-      <h4 className="mb-1 text-[15px] font-semibold leading-snug">{insight.title}</h4>
-      <p className="text-[13px] leading-relaxed text-[var(--text-secondary)]">{insight.body}</p>
+
+      <h4
+        className="font-display relative mb-1.5 text-[15.5px] font-medium leading-[1.25] text-white"
+        style={{
+          fontVariationSettings: '"SOFT" 55, "opsz" 144',
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {insight.title}
+      </h4>
+      <p className="relative text-[12.5px] leading-[1.55] text-white/60">
+        {insight.body}
+      </p>
 
       {insight.cta && (
-        <button className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-[var(--accent-primary)] hover:underline underline-offset-2">
+        <button
+          className="relative mt-3 inline-flex items-center gap-1 text-[12px] font-medium hover:underline underline-offset-2"
+          style={{ color: accent }}
+        >
           {insight.cta}
           <ChevronRight className="size-3.5" aria-hidden />
         </button>
       )}
 
-      <div className="mt-3 flex items-center gap-1 border-t border-[var(--border-subtle)] pt-3">
-        <span className="text-[11px] text-[var(--text-tertiary)]">Было полезно?</span>
+      <div
+        className="relative mt-3 flex items-center gap-1 pt-3"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+      >
+        <span className="text-[10.5px] text-white/40">Полезно?</span>
         <div className="ml-auto flex gap-1">
           <button
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-lg transition-colors",
+              "flex h-6 w-6 items-center justify-center rounded-md transition-colors",
               given === true
-                ? "bg-[var(--accent-mint-soft)] text-[var(--accent-mint)]"
-                : "text-[var(--text-tertiary)] hover:bg-[var(--accent-primary-soft)]",
+                ? "bg-[rgba(94,234,212,0.16)] text-[#5EEAD4]"
+                : "text-white/30 hover:bg-white/5 hover:text-white/60",
             )}
             onClick={() => {
               setGiven(true);
@@ -78,14 +116,14 @@ export function InsightCard({
             }}
             aria-label="Полезно"
           >
-            <ThumbsUp className="size-[13px]" />
+            <ThumbsUp className="size-[12px]" />
           </button>
           <button
             className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-lg transition-colors",
+              "flex h-6 w-6 items-center justify-center rounded-md transition-colors",
               given === false
-                ? "bg-[var(--surface-3)] text-[var(--text-secondary)]"
-                : "text-[var(--text-tertiary)] hover:bg-[var(--accent-primary-soft)]",
+                ? "bg-white/5 text-white/50"
+                : "text-white/30 hover:bg-white/5 hover:text-white/60",
             )}
             onClick={() => {
               setGiven(false);
@@ -93,7 +131,7 @@ export function InsightCard({
             }}
             aria-label="Не нужно такое"
           >
-            <ThumbsDown className="size-[13px]" />
+            <ThumbsDown className="size-[12px]" />
           </button>
         </div>
       </div>
@@ -151,8 +189,21 @@ export function InsightFeed({ insights }: { insights: Insight[] }) {
             </div>
             <div className="flex flex-col gap-3 overflow-y-auto pr-1">
               {insights.length === 0 ? (
-                <div className="glass rounded-2xl p-4 text-sm text-[var(--text-secondary)]">
-                  Инсайты появятся, когда накопится 7+ дней данных. А пока — вы можете исследовать операции вручную.
+                <div
+                  className="rounded-2xl p-4 text-[12.5px] leading-[1.55] text-[var(--text-secondary)]"
+                  style={{
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--border-subtle)",
+                  }}
+                >
+                  Инсайты появятся, когда накопится{" "}
+                  <span
+                    className="font-display-italic"
+                    style={{ color: "var(--hunter)" }}
+                  >
+                    7+ дней
+                  </span>{" "}
+                  данных. А пока — исследуйте операции вручную.
                 </div>
               ) : (
                 insights.map((i) => <InsightCard key={i.id} insight={i} />)
