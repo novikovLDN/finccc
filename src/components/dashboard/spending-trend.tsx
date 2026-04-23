@@ -45,9 +45,10 @@ export function SpendingTrend() {
   return (
     <GlassCard live className="p-6 md:col-span-2">
       <div className="flex items-center justify-between">
-        <div className="text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-          Темп расходов
-        </div>
+        <div className="kicker">Темп расходов</div>
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-[var(--text-tertiary)]">
+          ежедневно
+        </span>
       </div>
 
       <div className="mt-4 h-[180px]">
@@ -60,8 +61,8 @@ export function SpendingTrend() {
             <AreaChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
               <defs>
                 <linearGradient id="mm-spending" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity={0} />
+                  <stop offset="0%" stopColor="var(--hunter)" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="var(--hunter)" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis
@@ -78,7 +79,7 @@ export function SpendingTrend() {
                 tickFormatter={(v) => formatMoney(Number(v), base, { compact: true })}
               />
               <Tooltip
-                cursor={{ stroke: "var(--accent-primary)", strokeOpacity: 0.2 }}
+                cursor={{ stroke: "var(--hunter)", strokeOpacity: 0.25 }}
                 content={({ payload }) => {
                   if (!payload?.[0]) return null;
                   const p = payload[0].payload as (typeof data)[number];
@@ -95,11 +96,17 @@ export function SpendingTrend() {
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="var(--accent-primary)"
+                stroke="var(--hunter)"
                 strokeWidth={2}
                 fill="url(#mm-spending)"
-                animationDuration={800}
+                animationDuration={1000}
                 animationEasing="ease-out"
+                activeDot={{
+                  r: 4,
+                  fill: "var(--hunter)",
+                  stroke: "var(--surface-1)",
+                  strokeWidth: 2,
+                }}
               />
             </AreaChart>
           </ResponsiveContainer>

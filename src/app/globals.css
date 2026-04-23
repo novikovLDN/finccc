@@ -306,26 +306,44 @@ body > * {
     inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Liquid-glass реакция на курсор (TZ 5.4) */
+/* Liquid-glass реакция на курсор (TZ 5.4).
+   Тёплая warm-highlight вместо cold-white. */
 .glass-live {
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  transition: transform 400ms var(--ease-out-standard);
 }
 .glass-live::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -1px;
   background: radial-gradient(
-    400px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(255, 255, 255, 0.14),
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, #FFFAED 45%, transparent) 0%,
+    color-mix(in oklab, var(--hunter) 8%, transparent) 30%,
     transparent 55%
   );
   opacity: 0;
-  transition: opacity 300ms var(--ease-out-standard);
+  transition: opacity 320ms var(--ease-out-standard);
   pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  border-radius: inherit;
 }
 .glass-live:hover::before {
   opacity: 1;
+}
+.glass-live:hover {
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .glass-live::before {
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(94, 234, 212, 0.06) 30%,
+    transparent 55%
+  );
 }
 
 /* =========================================================

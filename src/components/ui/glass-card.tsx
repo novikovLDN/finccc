@@ -5,8 +5,14 @@ import { cn } from "@/lib/utils";
 
 /**
  * GlassCard — основной контейнер с backdrop-filter (TZ 4.1, 4.6).
- * Применяем для dashboard cards, widget panels, floating navigation.
- * НЕ применяем для длинных форм и data-таблиц.
+ *
+ * Варианты:
+ *  default — paper-tint glass (warm)
+ *  strong  — плотный glass для модалок
+ *  subtle  — просто surface-1 с тонкой тенью
+ *
+ * live=true включает liquid-glass hover: радиальная подсветка
+ * следует за курсором (через CSS variables --mx / --my).
  */
 type Variant = "default" | "strong" | "subtle";
 
@@ -17,7 +23,18 @@ export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, variant = "default", live = false, as: Comp = "div", onMouseMove, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = "default",
+      live = false,
+      as: Comp = "div",
+      onMouseMove,
+      onMouseLeave,
+      ...props
+    },
+    ref,
+  ) => {
     const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
       if (live) {
         const r = e.currentTarget.getBoundingClientRect();
@@ -27,15 +44,26 @@ export const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       onMouseMove?.(e);
     };
 
+    const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = (e) => {
+      if (live) {
+        e.currentTarget.style.setProperty("--mx", `50%`);
+        e.currentTarget.style.setProperty("--my", `50%`);
+      }
+      onMouseLeave?.(e);
+    };
+
     return (
       <Comp
         ref={ref}
         onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         className={cn(
-          variant === "strong" ? "glass-strong" : variant === "subtle" ? "" : "glass",
-          live && "glass-live",
-          variant === "subtle" &&
-            "bg-[var(--surface-1)] border border-[var(--border-subtle)] shadow-sm",
+          variant === "strong"
+            ? "glass-strong"
+            : variant === "subtle"
+              ? "bg-[var(--surface-1)] border border-[var(--border-subtle)] shadow-[0_2px_12px_rgba(26,22,18,0.04)]"
+              : "glass",
+          live && "glass-live transition-shadow duration-300 ease-[var(--ease-out-standard)] hover:shadow-[0_14px_40px_rgba(26,22,18,0.1)]",
           "rounded-2xl",
           className,
         )}

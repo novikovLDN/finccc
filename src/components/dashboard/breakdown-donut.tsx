@@ -44,8 +44,8 @@ export function BreakdownDonut() {
 
   return (
     <GlassCard live className="p-6">
-      <div className="text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
-        Расходы по категориям
+      <div className="flex items-center justify-between">
+        <div className="kicker">Расходы · по категориям</div>
       </div>
 
       {totalSum === 0 ? (
