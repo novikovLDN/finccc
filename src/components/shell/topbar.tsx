@@ -43,11 +43,11 @@ export function TopBar({ onOpenPalette }: { onOpenPalette?: () => void }) {
                   className="absolute inset-0 rounded-full"
                   style={{
                     background:
-                      "linear-gradient(135deg, var(--hunter) 0%, color-mix(in oklab, var(--hunter) 80%, var(--honey)) 100%)",
+                      "linear-gradient(135deg, #0EAA7B 0%, #12C68E 45%, #2D9BD4 100%)",
                     boxShadow:
-                      "0 4px 12px color-mix(in oklab, var(--hunter) 22%, transparent), inset 0 1px 0 rgba(255,255,255,0.2)",
+                      "0 6px 14px rgba(14, 170, 123, 0.30), inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -1px 0 rgba(0,0,0,0.08)",
                   }}
-                  transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                  transition={{ type: "spring", stiffness: 340, damping: 30 }}
                 />
               )}
               <span className="relative">{opt.label}</span>

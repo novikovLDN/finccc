@@ -28,17 +28,17 @@ export function Sidebar() {
     >
       <div className="flex h-12 items-center gap-2.5 px-2">
         <div
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
           style={{
             background:
-              "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 100%)",
+              "linear-gradient(135deg, #0EAA7B 0%, #12C68E 45%, #2D9BD4 100%)",
             boxShadow:
-              "0 4px 14px color-mix(in oklab, var(--hunter) 24%, transparent), inset 0 1px 0 rgba(255,255,255,0.25)",
+              "0 6px 16px rgba(14, 170, 123, 0.32), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.12)",
           }}
           aria-hidden
         >
           <span
-            className="font-display font-medium text-[color:var(--warm-paper)]"
+            className="font-display font-semibold text-white"
             style={{ fontVariationSettings: '"SOFT" 60, "opsz" 96' }}
           >
             M
@@ -81,22 +81,28 @@ export function Sidebar() {
                     layoutId="sidebar-active"
                     className="absolute inset-0 rounded-xl"
                     style={{
-                      background: "var(--hunter-soft)",
-                      boxShadow: "inset 0 0 0 1px color-mix(in oklab, var(--hunter) 18%, transparent)",
+                      background: "var(--accent-primary-soft)",
+                      boxShadow:
+                        "inset 0 0 0 1px color-mix(in oklab, var(--accent-primary) 20%, transparent), 0 4px 12px color-mix(in oklab, var(--accent-primary) 18%, transparent)",
                     }}
                     transition={{ type: "spring", stiffness: 320, damping: 28 }}
                   />
                   <motion.span
                     layoutId="sidebar-active-bar"
-                    className="absolute left-0 top-1/2 h-5 w-[2.5px] -translate-y-1/2 rounded-full"
-                    style={{ background: "var(--hunter)" }}
+                    className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, var(--accent-primary), var(--accent-sky))",
+                      boxShadow:
+                        "0 0 8px color-mix(in oklab, var(--accent-primary) 40%, transparent)",
+                    }}
                     transition={{ type: "spring", stiffness: 320, damping: 28 }}
                   />
                 </>
               )}
               <Icon
-                className="relative size-[18px] shrink-0"
-                style={{ color: active ? "var(--hunter)" : undefined }}
+                className="relative size-[18px] shrink-0 transition-colors"
+                style={{ color: active ? "var(--accent-primary)" : undefined }}
                 aria-hidden
               />
               {!collapsed && <span className="relative">{item.label}</span>}

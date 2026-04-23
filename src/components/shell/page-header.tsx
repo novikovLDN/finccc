@@ -84,14 +84,19 @@ export function PageHeader({
   );
 }
 
-/** Inline italic span с Fraunces italic для акцентов внутри заголовков. */
+/** Inline italic-span с Fraunces italic для акцентов внутри заголовков. */
 export function TitleItalic({ children }: { children: React.ReactNode }) {
   return (
     <span
       style={{
         fontStyle: "italic",
         fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144',
-        color: "var(--hunter)",
+        background:
+          "linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-sky) 100%)",
+        WebkitBackgroundClip: "text",
+        backgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        color: "transparent",
       }}
     >
       {children}

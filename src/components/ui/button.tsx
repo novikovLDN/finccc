@@ -65,14 +65,15 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, style, children, ...props }, ref) => {
-    // Primary — hunter gradient с лёгким honey warmth в углу.
+    // Primary — prismatic mint→cobalt gradient (fintech-signature).
     const resolvedStyle: React.CSSProperties =
       variant === "primary" || !variant
         ? {
             background:
-              "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 55%, color-mix(in oklab, var(--hunter) 75%, var(--honey)) 100%)",
+              "linear-gradient(135deg, #0EAA7B 0%, #12C68E 45%, #2D9BD4 100%)",
+            color: "#ffffff",
             boxShadow:
-              "0 4px 14px color-mix(in oklab, var(--hunter) 24%, transparent), inset 0 1px 0 rgba(255,255,255,0.18)",
+              "0 1px 0 rgba(255,255,255,0.18) inset, 0 -1px 0 rgba(0,0,0,0.08) inset, 0 6px 18px rgba(14, 170, 123, 0.28)",
             ...style,
           }
         : style ?? {};
