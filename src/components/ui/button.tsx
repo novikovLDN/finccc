@@ -65,12 +65,14 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, style, children, ...props }, ref) => {
-    // Градиентная заливка для primary — через inline style, чтобы не плодить утилиты.
+    // Primary — hunter gradient с лёгким honey warmth в углу.
     const resolvedStyle: React.CSSProperties =
       variant === "primary" || !variant
         ? {
             background:
-              "linear-gradient(135deg, var(--accent-primary) 0%, color-mix(in oklab, var(--accent-primary) 80%, var(--accent-mint)) 100%)",
+              "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 55%, color-mix(in oklab, var(--hunter) 75%, var(--honey)) 100%)",
+            boxShadow:
+              "0 4px 14px color-mix(in oklab, var(--hunter) 24%, transparent), inset 0 1px 0 rgba(255,255,255,0.18)",
             ...style,
           }
         : style ?? {};

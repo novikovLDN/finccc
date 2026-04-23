@@ -40,9 +40,9 @@ export function FAB({ onClick }: { onClick: () => void }) {
       className="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] bottom-[calc(env(safe-area-inset-bottom,0px)+88px)] md:bottom-6 md:right-6"
       style={{
         background:
-          "linear-gradient(135deg, var(--accent-primary), color-mix(in oklab, var(--accent-primary) 55%, var(--accent-mint)))",
+          "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 60%, color-mix(in oklab, var(--hunter) 70%, var(--honey)) 100%)",
         boxShadow:
-          "0 16px 40px color-mix(in oklab, var(--accent-primary) 35%, transparent), inset 0 1px 0 rgba(255,255,255,0.3)",
+          "0 18px 44px color-mix(in oklab, var(--hunter) 35%, transparent), 0 4px 12px rgba(26,22,18,0.18), inset 0 1px 0 rgba(255,255,255,0.3)",
       }}
       aria-label="Новая операция"
       title="Новая операция (⌘N)"
