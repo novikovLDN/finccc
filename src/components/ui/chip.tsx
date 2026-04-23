@@ -30,10 +30,10 @@ export function Chip({
   const style: React.CSSProperties = color
     ? {
         background: active
-          ? `color-mix(in oklab, ${color} 28%, transparent)`
-          : `color-mix(in oklab, ${color} 16%, transparent)`,
-        color,
-        borderColor: active ? color : "transparent",
+          ? `color-mix(in oklab, ${color} 24%, transparent)`
+          : `color-mix(in oklab, ${color} 12%, transparent)`,
+        color: active ? color : `color-mix(in oklab, ${color} 80%, var(--text-primary))`,
+        borderColor: active ? color : `color-mix(in oklab, ${color} 18%, transparent)`,
       }
     : {
         borderColor: "transparent",

@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { PageHeader, TitleItalic } from "@/components/shell/page-header";
+import { motion } from "motion/react";
 
 /**
  * Settings (TZ 7.10).
@@ -58,10 +59,10 @@ export default function SettingsPage() {
 
       {/* Appearance */}
       <GlassCard className="p-5">
-        <div className="mb-3 text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+        <div className="kicker mb-3">
           Внешний вид
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="inline-flex items-center gap-0 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-2)] p-1">
           {(
             [
               { v: "light" as const, label: "Светлая", Icon: Sun },
@@ -71,18 +72,33 @@ export default function SettingsPage() {
           ).map((o) => {
             const active = theme === o.v;
             return (
-              <button
+              <motion.button
                 key={o.v}
                 onClick={() => setTheme(o.v)}
-                className={`inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-sm font-medium transition-colors ${
-                  active
-                    ? "border-[var(--accent-primary)] bg-[var(--accent-primary-soft)] text-[var(--accent-primary)]"
-                    : "border-[var(--border-strong)] text-[var(--text-secondary)]"
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                className={`relative inline-flex h-9 items-center gap-1.5 rounded-xl px-3.5 text-[13px] font-medium transition-colors ${
+                  active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 }`}
               >
-                <o.Icon className="size-4" aria-hidden />
-                {o.label}
-              </button>
+                {active && (
+                  <motion.span
+                    layoutId="theme-pill"
+                    className="absolute inset-0 rounded-xl"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, var(--hunter) 0%, #2D5A4F 55%, color-mix(in oklab, var(--hunter) 75%, var(--honey)) 100%)",
+                      boxShadow:
+                        "0 4px 14px color-mix(in oklab, var(--hunter) 24%, transparent), inset 0 1px 0 rgba(255,255,255,0.18)",
+                    }}
+                    transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                  />
+                )}
+                <span className="relative inline-flex items-center gap-1.5">
+                  <o.Icon className="size-4" aria-hidden />
+                  {o.label}
+                </span>
+              </motion.button>
             );
           })}
         </div>
@@ -93,7 +109,7 @@ export default function SettingsPage() {
 
       {/* Currency */}
       <GlassCard className="p-5">
-        <div className="mb-3 text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+        <div className="kicker mb-3">
           Основная валюта
         </div>
         <div className="max-w-xs">
@@ -120,7 +136,7 @@ export default function SettingsPage() {
 
       {/* Notifications */}
       <GlassCard className="p-5">
-        <div className="mb-3 text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+        <div className="kicker mb-3">
           Уведомления
         </div>
         <div className="flex flex-col gap-3">
@@ -159,7 +175,7 @@ export default function SettingsPage() {
 
       {/* Export */}
       <GlassCard className="p-5">
-        <div className="mb-3 text-[13px] font-medium uppercase tracking-wider text-[var(--text-tertiary)]">
+        <div className="kicker mb-3">
           Ваши данные
         </div>
         <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
