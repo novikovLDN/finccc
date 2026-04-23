@@ -63,71 +63,72 @@
    ========================================================= */
 
 :root {
-  /* Light mode — warm editorial paper */
-  --bg-primary: #FBF8F1;
-  --bg-secondary: #F5F0E4;
-  --glass-tint: rgba(253, 251, 246, 0.62);
-  --glass-border: rgba(255, 250, 240, 0.75);
-  --glass-shadow: 0 12px 36px rgba(26, 22, 18, 0.08);
-  --glass-inner: inset 0 1px 0 rgba(255, 252, 245, 0.9);
+  /* Light mode — Premium neutral (Stripe / Mercury-inspired) */
+  --bg-primary: #FAFAFC;
+  --bg-secondary: #F4F4F7;
+  --glass-tint: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 8px 28px rgba(10, 11, 16, 0.06);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 1);
 
-  --text-primary: #1A1612;
-  --text-secondary: #6A5F52;
-  --text-tertiary: #A39689;
+  --text-primary: #0A0B10;
+  --text-secondary: #52525B;
+  --text-tertiary: #A1A1AA;
 
-  /* Интерактивные элементы — hunter-green как главный, honey как warm-CTA */
-  --accent-primary: #1E3A2E;
-  --accent-primary-soft: #DCE5DE;
-  --accent-mint: #4A8B77;
-  --accent-mint-soft: #D6E6DF;
-  --accent-peach: #D4A73E;
-  --accent-peach-soft: #F5E7BF;
-  --accent-sky: #4C6BA3;
-  --accent-sky-soft: #DCE5F1;
+  /* Primary = mint (electric green для fintech), secondary = cobalt */
+  --accent-primary: #0EAA7B;
+  --accent-primary-soft: rgba(14, 170, 123, 0.10);
+  --accent-mint: #0EAA7B;
+  --accent-mint-soft: rgba(14, 170, 123, 0.10);
+  --accent-peach: #FCB847;
+  --accent-peach-soft: rgba(252, 184, 71, 0.14);
+  --accent-sky: #5B92FF;
+  --accent-sky-soft: rgba(91, 146, 255, 0.10);
 
-  --critical: #C15A4A;
+  --critical: #E5484D;
 
-  --surface-1: #FDFBF6;
-  --surface-2: #F5F0E4;
-  --surface-3: #E8DFCD;
-  --border-subtle: rgba(26, 22, 18, 0.07);
-  --border-strong: rgba(26, 22, 18, 0.14);
+  --surface-1: #FFFFFF;
+  --surface-2: #F4F4F7;
+  --surface-3: #E9E9EE;
+  --border-subtle: rgba(10, 11, 16, 0.06);
+  --border-strong: rgba(10, 11, 16, 0.12);
 
-  --focus-ring: #1E3A2E;
+  --focus-ring: #0EAA7B;
 
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --bg-primary: #0f0e1a;
-  --bg-secondary: #16142a;
-  --glass-tint: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --bg-primary: #0A0B10;
+  --bg-secondary: #131520;
+  --glass-tint: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-  --text-primary: #f5f3ff;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #6b7280;
+  --text-primary: #F5F5F7;
+  --text-secondary: #A1A1AA;
+  --text-tertiary: #6B6B74;
 
-  --accent-primary: #a78bfa;
-  --accent-primary-soft: rgba(167, 139, 250, 0.16);
-  --accent-mint: #5eead4;
-  --accent-mint-soft: rgba(94, 234, 212, 0.16);
-  --accent-peach: #fdba74;
-  --accent-peach-soft: rgba(253, 186, 116, 0.16);
-  --accent-sky: #93c5fd;
-  --accent-sky-soft: rgba(147, 197, 253, 0.16);
+  /* Mint-accent (#3EEBAE) как главный — fintech-signature цвет */
+  --accent-primary: #3EEBAE;
+  --accent-primary-soft: rgba(62, 235, 174, 0.14);
+  --accent-mint: #3EEBAE;
+  --accent-mint-soft: rgba(62, 235, 174, 0.14);
+  --accent-peach: #FCB847;
+  --accent-peach-soft: rgba(252, 184, 71, 0.16);
+  --accent-sky: #7DA9FF;
+  --accent-sky-soft: rgba(125, 169, 255, 0.14);
 
-  --critical: #f87171;
+  --critical: #F06A6F;
 
-  --surface-1: #16142a;
-  --surface-2: #1f1d38;
-  --surface-3: #2a2747;
+  --surface-1: #131520;
+  --surface-2: #1B1D28;
+  --surface-3: #272A38;
   --border-subtle: rgba(255, 255, 255, 0.06);
   --border-strong: rgba(255, 255, 255, 0.12);
 
-  --focus-ring: #a78bfa;
+  --focus-ring: #3EEBAE;
 
   color-scheme: dark;
 }
@@ -232,25 +233,45 @@ input:-webkit-autofill:focus {
 body {
   min-height: 100dvh;
   background:
-    radial-gradient(1100px 600px at 15% -10%, rgba(30, 58, 46, 0.08), transparent 60%),
-    radial-gradient(900px 500px at 115% 10%, rgba(212, 167, 62, 0.06), transparent 55%),
-    radial-gradient(700px 400px at 70% 110%, rgba(74, 139, 119, 0.05), transparent 55%),
+    radial-gradient(1200px 700px at 15% -10%, rgba(14, 170, 123, 0.08), transparent 55%),
+    radial-gradient(900px 500px at 110% 5%, rgba(91, 146, 255, 0.06), transparent 55%),
+    radial-gradient(700px 400px at 50% 115%, rgba(252, 184, 71, 0.04), transparent 55%),
     var(--bg-primary);
   position: relative;
 }
 
-/* Paper-grain overlay — warm aesthetics */
+/* Fine grid overlay — fintech-корпоративная точная сетка */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.18;
-  mix-blend-mode: multiply;
-  background-image: radial-gradient(rgba(26, 22, 18, 0.5) 0.7px, transparent 0.7px);
-  background-size: 2.4px 2.4px;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to right, rgba(10, 11, 16, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10, 11, 16, 0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
 }
+
+/* Dark-mode: более тёмный, но сеточка светлая */
+[data-theme="dark"] body::before {
+  opacity: 0.45;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
+
+[data-theme="dark"] body {
+  background:
+    radial-gradient(1200px 700px at 15% -10%, rgba(62, 235, 174, 0.10), transparent 55%),
+    radial-gradient(900px 500px at 110% 5%, rgba(125, 169, 255, 0.08), transparent 55%),
+    radial-gradient(700px 400px at 50% 115%, rgba(252, 184, 71, 0.04), transparent 55%),
+    var(--bg-primary);
+}
+
 body > * {
   position: relative;
   z-index: 1;
@@ -307,21 +328,21 @@ body > * {
 }
 
 /* Liquid-glass реакция на курсор (TZ 5.4).
-   Тёплая warm-highlight вместо cold-white. */
+   Prismatic двухцветный highlight — signature fintech. */
 .glass-live {
   position: relative;
   overflow: hidden;
   will-change: transform;
-  transition: transform 400ms var(--ease-out-standard);
+  transition: transform 400ms var(--ease-out-standard), box-shadow 400ms var(--ease-out-standard);
 }
 .glass-live::before {
   content: "";
   position: absolute;
   inset: -1px;
   background: radial-gradient(
-    380px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, #FFFAED 45%, transparent) 0%,
-    color-mix(in oklab, var(--hunter) 8%, transparent) 30%,
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(62, 235, 174, 0.18) 0%,
+    rgba(91, 146, 255, 0.10) 25%,
     transparent 55%
   );
   opacity: 0;
@@ -334,16 +355,40 @@ body > * {
   opacity: 1;
 }
 .glass-live:hover {
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
 }
 
 [data-theme="dark"] .glass-live::before {
   background: radial-gradient(
-    380px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(94, 234, 212, 0.06) 30%,
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(62, 235, 174, 0.22) 0%,
+    rgba(125, 169, 255, 0.14) 25%,
     transparent 55%
   );
+}
+
+/* Premium shimmer edge — появляется по top-edge при hover */
+.glass-live::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(62, 235, 174, 0) 20%,
+    rgba(62, 235, 174, 0.9) 50%,
+    rgba(91, 146, 255, 0) 80%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 400ms var(--ease-out-standard);
+  pointer-events: none;
+}
+.glass-live:hover::after {
+  opacity: 1;
 }
 
 /* =========================================================
@@ -361,33 +406,39 @@ body > * {
 }
 
 /* =========================================================
-   App-level editorial tokens (используем и в /app).
-   Тёплые оттенки + Fraunces для hero-чисел и заголовков.
+   App-level editorial tokens — Midnight Mercury palette.
+   Dark-first премиум в духе Linear / Copilot Money / Robinhood.
    ========================================================= */
 :root {
-  --warm-paper: #FBF8F1;
-  --warm-cream: #F5F0E4;
-  --warm-ink: #1A1612;
-  --warm-ink-soft: #6A5F52;
-  --warm-ink-muted: #A39689;
-  --warm-line: #E8DFCD;
-  --hunter: #1E3A2E;
-  --hunter-soft: #DCE5DE;
-  --honey: #D4A73E;
-  --blush: #E8B4A0;
+  --warm-paper: #F4F4F7;
+  --warm-cream: #E4E4E9;
+  --warm-ink: #0A0B10;
+  --warm-ink-soft: #52525B;
+  --warm-ink-muted: #A1A1AA;
+  --warm-line: #E4E4E9;
+  --hunter: #0EAA7B;
+  --hunter-soft: rgba(62, 235, 174, 0.12);
+  --honey: #FCB847;
+  --blush: #FC8A6B;
+  --cobalt: #5B92FF;
+  --prism-a: #3EEBAE;
+  --prism-b: #5B92FF;
 }
 
 [data-theme="dark"] {
-  --warm-paper: #1C1A16;
-  --warm-cream: #242018;
-  --warm-ink: #F5F0E4;
-  --warm-ink-soft: #B8AC99;
-  --warm-ink-muted: #7A6F62;
-  --warm-line: #35302A;
-  --hunter: #5EEAD4;
-  --hunter-soft: rgba(94,234,212,0.14);
-  --honey: #E6BF56;
-  --blush: #F5C2A8;
+  --warm-paper: #131520;
+  --warm-cream: #1B1D28;
+  --warm-ink: #F5F5F7;
+  --warm-ink-soft: #A1A1AA;
+  --warm-ink-muted: #6B6B74;
+  --warm-line: #272A38;
+  --hunter: #3EEBAE;
+  --hunter-soft: rgba(62, 235, 174, 0.14);
+  --honey: #FCB847;
+  --blush: #FC8A6B;
+  --cobalt: #7DA9FF;
+  --prism-a: #3EEBAE;
+  --prism-b: #7DA9FF;
 }
 
 .font-display {
